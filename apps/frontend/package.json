@@ -29,7 +29,7 @@
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.3.3",
     "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/react": "^18.2.25",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
