@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc && npm run sentry:sourcemaps && npm run sentry:sourcemaps",
     "dev": "nodemon --exec ts-node src/index.ts",
     "format": "prettier --check ./src",
     "format:fix": "prettier --write .",
@@ -11,7 +13,8 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org naoki-fh --project dev-wisdom ./dist && sentry-cli sourcemaps upload --org naoki-fh --project dev-wisdom ./dist"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +25,7 @@
     "@graphql-codegen/typescript": "^4.1.0",
     "@graphql-codegen/typescript-resolvers": "^4.3.0",
     "@graphql-tools/schema": "^10.0.6",
+    "@sentry/cli": "^2.39.1",
     "@sentry/node": "^8.43.0",
     "@sentry/profiling-node": "^8.43.0",
     "body-parser": "^1.20.3",

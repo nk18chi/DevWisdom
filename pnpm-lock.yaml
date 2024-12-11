@@ -35,6 +35,9 @@ importers:
       '@graphql-tools/schema':
         specifier: ^10.0.6
         version: 10.0.11(graphql@16.9.0)
+      '@sentry/cli':
+        specifier: ^2.39.1
+        version: 2.39.1
       '@sentry/node':
         specifier: ^8.43.0
         version: 8.43.0
