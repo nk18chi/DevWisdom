@@ -5,3 +5,4 @@ coverage
 dist
 # Sentry Config File
 .sentryclirc
+.vercel
