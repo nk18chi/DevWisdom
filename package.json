@@ -5,6 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "format": "turbo format",
+    "format:fix": "turbo format:fix",
     "lint": "turbo lint",
     "test": "turbo test",
     "prepare": "husky"
