@@ -26,5 +26,7 @@ const updatedUserCommand: UpdatedUserCommandResult = (command) => {
 
 // workflow: invalidatedUserCommand => validatedUserCommand => updatedUser
 type UpdateUserWorkflow = (command: InvalidatedUserCommand) => Result<UpdatedUser, Error>;
-export const updateUserWorkflow: UpdateUserWorkflow = (command) =>
+const updateUserWorkflow: UpdateUserWorkflow = (command) =>
   ok(command).andThen(validatedUserCommand).andThen(updatedUserCommand);
+
+export default updateUserWorkflow;

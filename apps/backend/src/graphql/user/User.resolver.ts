@@ -6,7 +6,7 @@ import { Resolvers } from '../types';
 import IUser, { InvalidatedUser, InvalidatedUserCommand } from '../../entities/User.entity';
 import { createUserWorkflow } from '../../workflows/createUser.workflows';
 import { getUserById, saveCreatedUser, updateUser } from '../../repositories/user/User.repository';
-import { updateUserWorkflow } from '../../workflows/updateUser.workflows';
+import updateUserWorkflow from '../../workflows/updateUser.workflows';
 import { MongoId } from '../../objects/MongoId.object';
 
 const userResolver: Resolvers = {
