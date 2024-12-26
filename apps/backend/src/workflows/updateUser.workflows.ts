@@ -1,32 +1,59 @@
-import { ok, Result } from 'neverthrow';
-import { InvalidatedUserCommand, ValidatedUserCommand, UpdatedUser } from '../entities/User.entity';
-import { validatedCreateUser } from './createUser.workflows';
+import { err, ok, Result } from 'neverthrow';
+import { RawPassword } from '../objects/RawPassword.object';
+import { HashingPassword } from '../objects/HashingPassword.object';
+import User, { UpdatedUser } from '../entities/User.entity';
 
-type ValidatedUserCommandResult = (command: InvalidatedUserCommand) => Result<ValidatedUserCommand, Error>;
+interface InvalidatedUserInput {
+  password: string;
+}
 
-const validatedUserCommand: ValidatedUserCommandResult = (command) => {
-  const validatedUser = validatedCreateUser(command.invalidatedUser);
-  const values = Result.combine([validatedUser]);
-  return values.map(([validatedUserResult]) => ({
-    validatedUser: validatedUserResult,
+interface ValidatedUserInput {
+  password: RawPassword;
+}
+
+interface InvalidatedUserCommand {
+  input: InvalidatedUserInput;
+  user: User;
+}
+
+interface ValidatedUserCommand {
+  input: ValidatedUserInput;
+  user: User;
+}
+
+type ValidatedUseCommandResult = (command: InvalidatedUserCommand) => Result<ValidatedUserCommand, Error>;
+
+const validatedUserCommand: ValidatedUseCommandResult = (command) => {
+  const passwordResult = RawPassword(command.input.password);
+  const values = Result.combine([passwordResult]);
+
+  if (values.isErr()) {
+    return err(values.error);
+  }
+  const [password] = values.value;
+
+  return ok({
+    input: {
+      password,
+    },
     user: command.user,
-  }));
+  });
 };
 
-type UpdatedUserCommandResult = (command: ValidatedUserCommand) => Result<UpdatedUser, Error>;
+type UpdatedUserResult = (command: ValidatedUserCommand) => Result<UpdatedUser, Error>;
 
-const updatedUserCommand: UpdatedUserCommandResult = (command) => {
-  const user: UpdatedUser = {
-    ...command.user,
-    ...command.validatedUser,
-    kind: 'UpdatedUser',
-  };
-  return ok(user);
+const updatedUser: UpdatedUserResult = (command) => {
+  const hashingPasswordResult = HashingPassword(command.input.password);
+  const values = Result.combine([hashingPasswordResult]);
+  return values.map(([password]) => ({
+    _id: command.user._id,
+    password,
+  }));
 };
 
 // workflow: invalidatedUserCommand => validatedUserCommand => updatedUser
 type UpdateUserWorkflow = (command: InvalidatedUserCommand) => Result<UpdatedUser, Error>;
 const updateUserWorkflow: UpdateUserWorkflow = (command) =>
-  ok(command).andThen(validatedUserCommand).andThen(updatedUserCommand);
+  ok(command).andThen(validatedUserCommand).andThen(updatedUser);
 
 export default updateUserWorkflow;

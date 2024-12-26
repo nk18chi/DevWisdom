@@ -1,55 +1,32 @@
-import { Types, Schema } from 'mongoose';
-import { UserStatus } from '../graphql/types';
+import { GqlUserStatus } from '../graphql/types';
+import { Email } from '../objects/Email.object';
+import { HashingPassword } from '../objects/HashingPassword.object';
+import { MongoId } from '../objects/MongoId.object';
 
-export interface IUser {
-  _id: Types.ObjectId;
-  name: string;
-  email: string;
-  status: UserStatus;
-  followers: Schema.Types.ObjectId[];
-  following: Schema.Types.ObjectId[];
+interface User {
+  _id: MongoId;
+  email: Email;
+  emailVerified: boolean;
+  status: GqlUserStatus;
+  password: HashingPassword;
 }
 
-export interface User {
-  kind: 'User';
-  _id: Types.ObjectId;
-  name: string;
-  email: string;
-  status: UserStatus;
-  followers: Schema.Types.ObjectId[];
-  following: Schema.Types.ObjectId[];
+interface CreatedUser {
+  _id: MongoId;
+  email: Email;
+  emailVerified: false;
+  password: HashingPassword;
+  status: GqlUserStatus.Active;
 }
 
-export interface InvalidatedUser {
-  kind: 'InvalidatedUser';
-  name: string;
-  email: string;
+interface UpdatedUser {
+  _id: MongoId;
+  password: HashingPassword;
 }
 
-export interface ValidatedUser {
-  kind: 'ValidatedUser';
-  name: string;
-  email: string;
+interface AuthorizedUser {
+  _id: MongoId;
 }
 
-export interface CreatedUser {
-  kind: 'CreatedUser';
-  _id: Types.ObjectId;
-  name: string;
-  email: string;
-  status: UserStatus.Active;
-}
-
-export interface InvalidatedUserCommand {
-  invalidatedUser: InvalidatedUser;
-  user: User;
-}
-
-export interface ValidatedUserCommand {
-  validatedUser: ValidatedUser;
-  user: User;
-}
-
-export type UpdatedUser = Omit<User, 'kind'> & { kind: 'UpdatedUser' };
-
-export default IUser;
+export { CreatedUser, UpdatedUser, User, AuthorizedUser };
+export default User;

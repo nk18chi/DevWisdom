@@ -2,43 +2,7 @@ const GQL_QUERY_GET_USERS = `
   query Users {
     getUsers {
       _id
-      name
-      following {
-        name
-      }
-      followers {
-        name
-      }
-    }
-  }
-`;
-
-const GQL_QUERY_OPTIMIZED_USERS = `
-  query OptimizedGetUsers {
-    optimizedGetUsers {
-      name
-      _id
-      following {
-        name
-      }
-      followers {
-        name
-      }
-    }
-  }
-`;
-
-const GQL_QUERY_AUTHORIZED_USERS = `
-  query AuthorizedGetUsers {
-    authorizedGetUsers {
-      name
-      _id
-      following {
-        name
-      }
-      followers {
-        name
-      }
+      email
     }
   }
 `;
@@ -56,15 +20,7 @@ const GET_QUERY_USERS = `
         cursor
         node {
           _id
-          name
-          followers {
-            _id
-            name
-          }
-          following {
-            _id
-            name
-          }
+          email
         }
       }
       pageInfo {
@@ -75,10 +31,4 @@ const GET_QUERY_USERS = `
   }
 `;
 
-export {
-  GET_QUERY_USERS,
-  GQL_QUERY_GET_USERS,
-  GQL_QUERY_OPTIMIZED_USERS,
-  GQL_QUERY_AUTHORIZED_USERS,
-  GQL_QUERY_USER_TOKEN,
-};
+export { GET_QUERY_USERS, GQL_QUERY_GET_USERS, GQL_QUERY_USER_TOKEN };

@@ -23,8 +23,8 @@ import 'dotenv/config';
 import userDataLoader from './dataloader/User.dataLoader';
 import Context from './interfaces/Context.interface';
 import permissions from './graphql/authorizations/permissions';
-import IAuthorizedUser from './interfaces/AuthorizedUser.interface';
 import './sentry';
+import { AuthorizedUser } from './entities/User.entity';
 
 const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } = rateLimitDirective();
 
@@ -114,7 +114,7 @@ const runServer = async () => {
     expressMiddleware(server, {
       context: async ({ req }) => ({
         user: req.headers.authorization
-          ? (jwt.verify(req.headers.authorization, process.env.JWT_PRIVATE_KEY) as IAuthorizedUser)
+          ? (jwt.verify(req.headers.authorization, process.env.JWT_PRIVATE_KEY) as AuthorizedUser)
           : undefined,
         dataLoaders: {
           userDataLoader,

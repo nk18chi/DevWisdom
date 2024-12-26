@@ -1,7 +1,6 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { IUser } from '../entities/User.entity';
+import { User } from '../entities/User.entity';
 import { Context } from '../interfaces/Context.interface';
-
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -20,87 +19,74 @@ export type Scalars = {
   Float: { input: number; output: number };
 };
 
-export enum CacheControlScope {
+export enum GqlCacheControlScope {
   Private = 'PRIVATE',
   Public = 'PUBLIC',
 }
 
-export type InvalidatedCreateUserInput = {
+export type GqlCreateUserInput = {
   email: Scalars['String']['input'];
-  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
-export type InvalidatedUpdateUserInput = {
-  email: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-};
-
-export type Mutation = {
+export type GqlMutation = {
   __typename?: 'Mutation';
-  createUser: User;
-  updateUser: User;
+  createUser: GqlUser;
+  updateUser: GqlUser;
 };
 
-export type MutationCreateUserArgs = {
-  input: InvalidatedCreateUserInput;
+export type GqlMutationCreateUserArgs = {
+  input: GqlCreateUserInput;
 };
 
-export type MutationUpdateUserArgs = {
-  input: InvalidatedUpdateUserInput;
-  userId: Scalars['String']['input'];
+export type GqlMutationUpdateUserArgs = {
+  input: GqlUpdateUserInput;
 };
 
-export type OptimizedUser = {
-  __typename?: 'OptimizedUser';
-  _id: Scalars['ID']['output'];
-  followers?: Maybe<Array<Maybe<User>>>;
-  following?: Maybe<Array<Maybe<User>>>;
-  name: Scalars['String']['output'];
-};
-
-export type PageInfo = {
+export type GqlPageInfo = {
   __typename?: 'PageInfo';
   endCursor?: Maybe<Scalars['String']['output']>;
   hasNextPage?: Maybe<Scalars['Boolean']['output']>;
 };
 
-export type Query = {
+export type GqlQuery = {
   __typename?: 'Query';
-  authorizedGetUsers?: Maybe<Array<Maybe<User>>>;
-  fpts?: Maybe<Scalars['Boolean']['output']>;
-  getUsers?: Maybe<Array<Maybe<User>>>;
-  neverthrow?: Maybe<Scalars['Boolean']['output']>;
-  optimizedGetUsers?: Maybe<Array<Maybe<OptimizedUser>>>;
+  getUsers?: Maybe<Array<Maybe<GqlUser>>>;
   userToken?: Maybe<Scalars['String']['output']>;
-  users?: Maybe<UserConnection>;
+  users?: Maybe<GqlUserConnection>;
 };
 
-export type QueryUsersArgs = {
+export type GqlQueryUsersArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first: Scalars['Int']['input'];
 };
 
-export type User = {
+export type GqlUpdateUserInput = {
+  password: Scalars['String']['input'];
+};
+
+export type GqlUser = {
   __typename?: 'User';
   _id: Scalars['ID']['output'];
-  followers?: Maybe<Array<Maybe<User>>>;
-  following?: Maybe<Array<Maybe<User>>>;
-  name: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  emailVerified: Scalars['Boolean']['output'];
+  password: Scalars['String']['output'];
+  status: GqlUserStatus;
 };
 
-export type UserConnection = {
+export type GqlUserConnection = {
   __typename?: 'UserConnection';
-  edges?: Maybe<Array<Maybe<UserEdge>>>;
-  pageInfo?: Maybe<PageInfo>;
+  edges?: Maybe<Array<Maybe<GqlUserEdge>>>;
+  pageInfo?: Maybe<GqlPageInfo>;
 };
 
-export type UserEdge = {
+export type GqlUserEdge = {
   __typename?: 'UserEdge';
   cursor?: Maybe<Scalars['String']['output']>;
-  node?: Maybe<User>;
+  node?: Maybe<GqlUser>;
 };
 
-export enum UserStatus {
+export enum GqlUserStatus {
   Active = 'ACTIVE',
   Inactive = 'INACTIVE',
 }
@@ -176,172 +162,149 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 ) => TResult | Promise<TResult>;
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
+export type GqlResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  CacheControlScope: CacheControlScope;
+  CacheControlScope: GqlCacheControlScope;
+  CreateUserInput: GqlCreateUserInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  InvalidatedCreateUserInput: InvalidatedCreateUserInput;
-  InvalidatedUpdateUserInput: InvalidatedUpdateUserInput;
   Mutation: ResolverTypeWrapper<{}>;
-  OptimizedUser: ResolverTypeWrapper<
-    Omit<OptimizedUser, 'followers' | 'following'> & {
-      followers?: Maybe<Array<Maybe<ResolversTypes['User']>>>;
-      following?: Maybe<Array<Maybe<ResolversTypes['User']>>>;
-    }
-  >;
-  PageInfo: ResolverTypeWrapper<PageInfo>;
+  PageInfo: ResolverTypeWrapper<GqlPageInfo>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  User: ResolverTypeWrapper<IUser>;
+  UpdateUserInput: GqlUpdateUserInput;
+  User: ResolverTypeWrapper<User>;
   UserConnection: ResolverTypeWrapper<
-    Omit<UserConnection, 'edges'> & { edges?: Maybe<Array<Maybe<ResolversTypes['UserEdge']>>> }
+    Omit<GqlUserConnection, 'edges'> & { edges?: Maybe<Array<Maybe<GqlResolversTypes['UserEdge']>>> }
   >;
-  UserEdge: ResolverTypeWrapper<Omit<UserEdge, 'node'> & { node?: Maybe<ResolversTypes['User']> }>;
-  UserStatus: UserStatus;
+  UserEdge: ResolverTypeWrapper<Omit<GqlUserEdge, 'node'> & { node?: Maybe<GqlResolversTypes['User']> }>;
+  UserStatus: GqlUserStatus;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
+export type GqlResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  CreateUserInput: GqlCreateUserInput;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
-  InvalidatedCreateUserInput: InvalidatedCreateUserInput;
-  InvalidatedUpdateUserInput: InvalidatedUpdateUserInput;
   Mutation: {};
-  OptimizedUser: Omit<OptimizedUser, 'followers' | 'following'> & {
-    followers?: Maybe<Array<Maybe<ResolversParentTypes['User']>>>;
-    following?: Maybe<Array<Maybe<ResolversParentTypes['User']>>>;
-  };
-  PageInfo: PageInfo;
+  PageInfo: GqlPageInfo;
   Query: {};
   String: Scalars['String']['output'];
-  User: IUser;
-  UserConnection: Omit<UserConnection, 'edges'> & { edges?: Maybe<Array<Maybe<ResolversParentTypes['UserEdge']>>> };
-  UserEdge: Omit<UserEdge, 'node'> & { node?: Maybe<ResolversParentTypes['User']> };
+  UpdateUserInput: GqlUpdateUserInput;
+  User: User;
+  UserConnection: Omit<GqlUserConnection, 'edges'> & {
+    edges?: Maybe<Array<Maybe<GqlResolversParentTypes['UserEdge']>>>;
+  };
+  UserEdge: Omit<GqlUserEdge, 'node'> & { node?: Maybe<GqlResolversParentTypes['User']> };
 };
 
-export type CacheControlDirectiveArgs = {
+export type GqlCacheControlDirectiveArgs = {
   inheritMaxAge?: Maybe<Scalars['Boolean']['input']>;
   maxAge?: Maybe<Scalars['Int']['input']>;
-  scope?: Maybe<CacheControlScope>;
+  scope?: Maybe<GqlCacheControlScope>;
 };
 
-export type CacheControlDirectiveResolver<
+export type GqlCacheControlDirectiveResolver<
   Result,
   Parent,
   ContextType = Context,
-  Args = CacheControlDirectiveArgs,
+  Args = GqlCacheControlDirectiveArgs,
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type RateLimitDirectiveArgs = {
+export type GqlRateLimitDirectiveArgs = {
   duration?: Scalars['Int']['input'];
   limit?: Scalars['Int']['input'];
 };
 
-export type RateLimitDirectiveResolver<
+export type GqlRateLimitDirectiveResolver<
   Result,
   Parent,
   ContextType = Context,
-  Args = RateLimitDirectiveArgs,
+  Args = GqlRateLimitDirectiveArgs,
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type MutationResolvers<
+export type GqlMutationResolvers<
   ContextType = Context,
-  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
+  ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation'],
 > = {
   createUser?: Resolver<
-    ResolversTypes['User'],
+    GqlResolversTypes['User'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateUserArgs, 'input'>
+    RequireFields<GqlMutationCreateUserArgs, 'input'>
   >;
   updateUser?: Resolver<
-    ResolversTypes['User'],
+    GqlResolversTypes['User'],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateUserArgs, 'input' | 'userId'>
+    RequireFields<GqlMutationUpdateUserArgs, 'input'>
   >;
 };
 
-export type OptimizedUserResolvers<
+export type GqlPageInfoResolvers<
   ContextType = Context,
-  ParentType extends ResolversParentTypes['OptimizedUser'] = ResolversParentTypes['OptimizedUser'],
+  ParentType extends GqlResolversParentTypes['PageInfo'] = GqlResolversParentTypes['PageInfo'],
 > = {
-  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  followers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
-  following?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  endCursor?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
+  hasNextPage?: Resolver<Maybe<GqlResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PageInfoResolvers<
+export type GqlQueryResolvers<
   ContextType = Context,
-  ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo'],
+  ParentType extends GqlResolversParentTypes['Query'] = GqlResolversParentTypes['Query'],
 > = {
-  endCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  hasNextPage?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type QueryResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
-> = {
-  authorizedGetUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
-  fpts?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  getUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
-  neverthrow?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  optimizedGetUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['OptimizedUser']>>>, ParentType, ContextType>;
-  userToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  getUsers?: Resolver<Maybe<Array<Maybe<GqlResolversTypes['User']>>>, ParentType, ContextType>;
+  userToken?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
   users?: Resolver<
-    Maybe<ResolversTypes['UserConnection']>,
+    Maybe<GqlResolversTypes['UserConnection']>,
     ParentType,
     ContextType,
-    RequireFields<QueryUsersArgs, 'first'>
+    RequireFields<GqlQueryUsersArgs, 'first'>
   >;
 };
 
-export type UserResolvers<
+export type GqlUserResolvers<
   ContextType = Context,
-  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User'],
+  ParentType extends GqlResolversParentTypes['User'] = GqlResolversParentTypes['User'],
 > = {
-  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  followers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
-  following?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  _id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
+  email?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  emailVerified?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType>;
+  password?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<GqlResolversTypes['UserStatus'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserConnectionResolvers<
+export type GqlUserConnectionResolvers<
   ContextType = Context,
-  ParentType extends ResolversParentTypes['UserConnection'] = ResolversParentTypes['UserConnection'],
+  ParentType extends GqlResolversParentTypes['UserConnection'] = GqlResolversParentTypes['UserConnection'],
 > = {
-  edges?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserEdge']>>>, ParentType, ContextType>;
-  pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
+  edges?: Resolver<Maybe<Array<Maybe<GqlResolversTypes['UserEdge']>>>, ParentType, ContextType>;
+  pageInfo?: Resolver<Maybe<GqlResolversTypes['PageInfo']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserEdgeResolvers<
+export type GqlUserEdgeResolvers<
   ContextType = Context,
-  ParentType extends ResolversParentTypes['UserEdge'] = ResolversParentTypes['UserEdge'],
+  ParentType extends GqlResolversParentTypes['UserEdge'] = GqlResolversParentTypes['UserEdge'],
 > = {
-  cursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  node?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  cursor?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
+  node?: Resolver<Maybe<GqlResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = Context> = {
-  Mutation?: MutationResolvers<ContextType>;
-  OptimizedUser?: OptimizedUserResolvers<ContextType>;
-  PageInfo?: PageInfoResolvers<ContextType>;
-  Query?: QueryResolvers<ContextType>;
-  User?: UserResolvers<ContextType>;
-  UserConnection?: UserConnectionResolvers<ContextType>;
-  UserEdge?: UserEdgeResolvers<ContextType>;
+export type GqlResolvers<ContextType = Context> = {
+  Mutation?: GqlMutationResolvers<ContextType>;
+  PageInfo?: GqlPageInfoResolvers<ContextType>;
+  Query?: GqlQueryResolvers<ContextType>;
+  User?: GqlUserResolvers<ContextType>;
+  UserConnection?: GqlUserConnectionResolvers<ContextType>;
+  UserEdge?: GqlUserEdgeResolvers<ContextType>;
 };
 
-export type DirectiveResolvers<ContextType = Context> = {
-  cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
-  rateLimit?: RateLimitDirectiveResolver<any, any, ContextType>;
+export type GqlDirectiveResolvers<ContextType = Context> = {
+  cacheControl?: GqlCacheControlDirectiveResolver<any, any, ContextType>;
+  rateLimit?: GqlRateLimitDirectiveResolver<any, any, ContextType>;
 };

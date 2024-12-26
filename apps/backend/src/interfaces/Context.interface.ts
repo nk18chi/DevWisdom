@@ -1,11 +1,10 @@
 import DataLoader from 'dataloader';
 import { Types } from 'mongoose';
 import { BaseContext } from '@apollo/server';
-import IAuthorizedUser from './AuthorizedUser.interface';
-import IUser from '../entities/User.entity';
+import IUser, { AuthorizedUser } from '../entities/User.entity';
 
 export interface Context extends BaseContext {
-  user?: IAuthorizedUser;
+  user?: AuthorizedUser;
   dataLoaders: {
     userDataLoader: DataLoader<Types.ObjectId, IUser, Types.ObjectId>;
   };

@@ -1,6 +1,5 @@
 import userResolver from './user/User.resolver';
-import fpResolver from './fp/fp.resolver';
 
-const resolvers = [userResolver, fpResolver];
+const resolvers = [userResolver];
 
 export default resolvers;

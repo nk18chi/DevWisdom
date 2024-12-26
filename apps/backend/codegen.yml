@@ -10,6 +10,7 @@ generates:
       - typescript
       - typescript-resolvers
     config:
+      typesPrefix: Gql
       contextType: ../interfaces/Context.interface#Context
       mappers:
-        User: ../entities/User.entity#IUser
+        User: ../entities/User.entity#User

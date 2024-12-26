@@ -1,19 +1,13 @@
 const userTypeDef = `#graphql
-type User @cacheControl(maxAge: 60) {
+type User {
   _id: ID!
-  name: String!
-  followers: [User]
-  following: [User]
+  email: String!
+  emailVerified: Boolean!
+  status: UserStatus!
+  password: String! # don't expose password so this is always null, handling by GraphQL Shield
 }
 
-type OptimizedUser @cacheControl(maxAge: 60) {
-  _id: ID!
-  name: String!
-  followers: [User]
-  following: [User]
-}
-
-type UserConnection {
+type UserConnection @cacheControl(maxAge: 60) {
   edges: [UserEdge]
   pageInfo: PageInfo
 }
@@ -31,24 +25,21 @@ type PageInfo {
 type Query {
   users(first: Int!, after: String): UserConnection
   getUsers: [User]
-  optimizedGetUsers: [OptimizedUser]
-  authorizedGetUsers: [User]
   userToken: String @cacheControl(maxAge: 0) @rateLimit(limit: 3, duration: 5)
 }
 
 type Mutation {
-  createUser(input: InvalidatedCreateUserInput!): User!
-  updateUser(userId: String!, input: InvalidatedUpdateUserInput!): User!
+  createUser(input: CreateUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
 }
 
-input InvalidatedCreateUserInput {
-  name: String!
+input CreateUserInput {
   email: String!
+  password: String!
 }
 
-input InvalidatedUpdateUserInput {
-  name: String!
-  email: String!
+input UpdateUserInput {
+  password: String!
 }
 
 enum UserStatus {

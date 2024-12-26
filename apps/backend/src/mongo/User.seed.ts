@@ -9,70 +9,35 @@ const seedData = async () => {
   }
   await User.insertMany(
     [
-      { name: 'Alice', email: 'alice@example.com' },
-      { name: 'Bob', email: 'bob@example.com' },
-      { name: 'Charlie', email: 'charlie@example.com' },
-      { name: 'David', email: 'david@example.com' },
-      { name: 'Eve', email: 'eve@example.com' },
-      { name: 'Frank', email: 'frank@example.com' },
-      { name: 'Grace', email: 'grace@example.com' },
-      { name: 'Heidi', email: 'heidi@example.com' },
-      { name: 'Ivan', email: 'ivan@example.com' },
-      { name: 'Judy', email: 'judy@example.com' },
-      { name: 'Kevin', email: 'kevin@example.com' },
-      { name: 'Lily', email: 'lily@example.com' },
-      { name: 'Mallory', email: 'mallory@example.com' },
-      { name: 'Nia', email: 'nia@example.com' },
-      { name: 'Oscar', email: 'oscar@example.com' },
-      { name: 'Peggy', email: 'peggy@example.com' },
-      { name: 'Quentin', email: 'quentin@example.com' },
-      { name: 'Rita', email: 'rita@example.com' },
-      { name: 'Steve', email: 'steve@example.com' },
-      { name: 'Trent', email: 'trent@example.com' },
-      { name: 'Ursula', email: 'ursula@example.com' },
-      { name: 'Victor', email: 'victor@example.com' },
-      { name: 'Wendy', email: 'wendy@example.com' },
-      { name: 'Xander', email: 'xander@example.com' },
-      { name: 'Yvonne', email: 'yvonne@example.com' },
-      { name: 'Zoe', email: 'zoe@example.com' },
+      { name: 'Alice', email: 'alice@example.com', password: 'password' },
+      { name: 'Bob', email: 'bob@example.com', password: 'password' },
+      { name: 'Charlie', email: 'charlie@example.com', password: 'password' },
+      { name: 'David', email: 'david@example.com', password: 'password' },
+      { name: 'Eve', email: 'eve@example.com', password: 'password' },
+      { name: 'Frank', email: 'frank@example.com', password: 'password' },
+      { name: 'Grace', email: 'grace@example.com', password: 'password' },
+      { name: 'Heidi', email: 'heidi@example.com', password: 'password' },
+      { name: 'Ivan', email: 'ivan@example.com', password: 'password' },
+      { name: 'Judy', email: 'judy@example.com', password: 'password' },
+      { name: 'Kevin', email: 'kevin@example.com', password: 'password' },
+      { name: 'Lily', email: 'lily@example.com', password: 'password' },
+      { name: 'Mallory', email: 'mallory@example.com', password: 'password' },
+      { name: 'Nia', email: 'nia@example.com', password: 'password' },
+      { name: 'Oscar', email: 'oscar@example.com', password: 'password' },
+      { name: 'Peggy', email: 'peggy@example.com', password: 'password' },
+      { name: 'Quentin', email: 'quentin@example.com', password: 'password' },
+      { name: 'Rita', email: 'rita@example.com', password: 'password' },
+      { name: 'Steve', email: 'steve@example.com', password: 'password' },
+      { name: 'Trent', email: 'trent@example.com', password: 'password' },
+      { name: 'Ursula', email: 'ursula@example.com', password: 'password' },
+      { name: 'Victor', email: 'victor@example.com', password: 'password' },
+      { name: 'Wendy', email: 'wendy@example.com', password: 'password' },
+      { name: 'Xander', email: 'xander@example.com', password: 'password' },
+      { name: 'Yvonne', email: 'yvonne@example.com', password: 'password' },
+      { name: 'Zoe', email: 'zoe@example.com', password: 'password' },
     ],
     { ordered: false },
   );
-
-  const followList = [
-    {
-      target: 'Alice',
-      followers: ['Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace'],
-      following: ['Bob', 'Eve', 'Wendy', 'Xander', 'Yvonne'],
-    },
-    { target: 'Bob', followers: ['Eve', 'Frank'], following: ['Alice', 'Charlie', 'David'] },
-    { target: 'Charlie', followers: ['David', 'Eve', 'Frank', 'Grace'], following: ['Alice', 'Bob'] },
-    { target: 'David', followers: ['Alice', 'Bob', 'Charlie', 'Eve'], following: ['Alice', 'Charlie'] },
-    {
-      target: 'Eve',
-      followers: ['Alice', 'Bob', 'Charlie', 'David', 'Frank', 'Grace'],
-      following: ['Alice', 'Bob', 'Charlie'],
-    },
-    { target: 'Frank', followers: ['Alice', 'Bob', 'Charlie', 'David', 'Eve'], following: ['Alice', 'Charlie'] },
-  ];
-  followList.map(async (list) => {
-    const user = await User.findOne({ name: list.target });
-    if (!user) {
-      logger.error('Alice not found');
-      return;
-    }
-    const followers = await User.find({ name: { $in: list.followers } });
-    const followings = await User.find({ name: { $in: list.following } });
-    await User.findOneAndUpdate(
-      { _id: user._id },
-      {
-        $set: {
-          followers: followers.map((follower) => follower._id),
-          following: followings.map((following) => following._id),
-        },
-      },
-    );
-  });
   logger.info('User data is seeded');
 };
 
