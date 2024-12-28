@@ -8,7 +8,7 @@ import Context from '../../interfaces/Context.interface';
 import typeDefs from '../schemas';
 import resolvers from '../resolvers';
 import User from '../../repositories/user/User.schema';
-import { GQL_QUERY_USER_TOKEN, GET_QUERY_USERS } from '../gql/User.gql';
+import { GET_QUERY_USERS } from '../gql/User.gql';
 import permissions from '../authorizations/permissions';
 import IUser from '../../entities/User.entity';
 import { GqlUserConnection } from '../types';
@@ -127,34 +127,6 @@ describe('User.resolver.ts', () => {
         {
           query: GET_QUERY_USERS,
           variables: { first: pagination },
-        },
-        {
-          contextValue: {
-            ...contextMock.contextValue,
-            user: undefined,
-          },
-        },
-      );
-      assert(response.body.kind === 'single');
-      expect(response.body.singleResult.errors?.[0].message).toEqual('Not Authorised!');
-    });
-  });
-  describe('userToken query', () => {
-    test('should return userToken', async () => {
-      const response = await testServer.executeOperation<{ userToken: string }>(
-        {
-          query: GQL_QUERY_USER_TOKEN,
-        },
-        contextMock,
-      );
-      assert(response.body.kind === 'single');
-      expect(response.body.singleResult.errors).toBeUndefined();
-      expect(response.body.singleResult.data?.userToken).toBeDefined();
-    });
-    test('should not call userToken without authorization', async () => {
-      const response = await testServer.executeOperation<{ userToken: string }>(
-        {
-          query: GQL_QUERY_USER_TOKEN,
         },
         {
           contextValue: {

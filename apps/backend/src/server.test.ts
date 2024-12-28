@@ -47,14 +47,14 @@ describe('server.ts', () => {
           headers: {
             authorization:
               // eslint-disable-next-line max-len
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjhlMTY5ZDU4Yjg2MDQ1YzFjNWEyYWEiLCJpYXQiOjE3MjA1ODc5MzN9.7YYezMRB5QTK8Ye7lSD2wwm5oWsP1A3u0Qcf-JgovFM',
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZkZTE5YzZiYjg4NWQyYjhkNTViNTMiLCJpYXQiOjE3MzUyNTQ1NjZ9.W1WuV1jEXzEIecYeiLZ0oqTPJC4tJWecEwylHm1HPZ8',
           },
         },
       }),
     ).toEqual({
       user: {
-        _id: '668e169d58b86045c1c5a2aa',
-        iat: 1720587933,
+        _id: '676de19c6bb885d2b8d55b53',
+        iat: 1735254566,
       },
       dataLoaders: {
         userDataLoader,

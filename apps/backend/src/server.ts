@@ -88,7 +88,7 @@ const runServer = async () => {
                   });
                 }
                 // eslint-disable-next-line no-param-reassign
-                err.message = `${err.message} - ${ctx.operationName}`;
+                err.message = [err.message, ctx.operationName].filter((value) => value).join(' - ');
                 Sentry.captureException(err);
               });
             });
