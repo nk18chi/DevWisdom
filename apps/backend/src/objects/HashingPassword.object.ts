@@ -1,20 +1,24 @@
-import { Result, ok, err } from 'neverthrow';
+import { ResultAsync, errAsync, okAsync } from 'neverthrow';
 import { Newtype, iso } from 'newtype-ts';
 import { z } from 'zod';
 import { type ValidationError, fromZodError } from 'zod-validation-error';
+import bcrypt from 'bcrypt';
 import { RawPassword } from './RawPassword.object';
+
+const saltRounds = 10;
 
 export type HashingPassword = Newtype<{ readonly HashingPassword: unique symbol }, string>;
 
-// TODO: Add password validation
-const HashingPasswordSchema = z.string();
+const HashingPasswordSchema = z.string().min(1, { message: 'RawPassword is required' });
 
-export function HashingPassword(password: RawPassword): Result<HashingPassword, ValidationError> {
-  const result = HashingPasswordSchema.safeParse(password);
+export function HashingPassword(password: RawPassword): ResultAsync<HashingPassword, ValidationError | Error> {
+  const result = HashingPasswordSchema.safeParse(password.toString());
 
   if (!result.success) {
-    return err(fromZodError(result.error));
+    return errAsync(fromZodError(result.error));
   }
 
-  return ok(iso<HashingPassword>().wrap(password.toString()));
+  return ResultAsync.fromPromise(bcrypt.hash(password.toString(), saltRounds), (err) => err as Error).andThen((hash) =>
+    okAsync(iso<HashingPassword>().wrap(hash)),
+  );
 }

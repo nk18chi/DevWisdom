@@ -24,19 +24,19 @@ export enum GqlCacheControlScope {
   Public = 'PUBLIC',
 }
 
-export type GqlCreateUserInput = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-};
-
 export type GqlMutation = {
   __typename?: 'Mutation';
-  createUser: GqlUser;
+  signIn?: Maybe<Scalars['String']['output']>;
+  signUp: GqlUser;
   updateUser: GqlUser;
 };
 
-export type GqlMutationCreateUserArgs = {
-  input: GqlCreateUserInput;
+export type GqlMutationSignInArgs = {
+  input: GqlSignInUserInput;
+};
+
+export type GqlMutationSignUpArgs = {
+  input: GqlSignUpUserInput;
 };
 
 export type GqlMutationUpdateUserArgs = {
@@ -52,13 +52,22 @@ export type GqlPageInfo = {
 export type GqlQuery = {
   __typename?: 'Query';
   getUsers?: Maybe<Array<Maybe<GqlUser>>>;
-  userToken?: Maybe<Scalars['String']['output']>;
   users?: Maybe<GqlUserConnection>;
 };
 
 export type GqlQueryUsersArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first: Scalars['Int']['input'];
+};
+
+export type GqlSignInUserInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type GqlSignUpUserInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type GqlUpdateUserInput = {
@@ -165,12 +174,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type GqlResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CacheControlScope: GqlCacheControlScope;
-  CreateUserInput: GqlCreateUserInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   PageInfo: ResolverTypeWrapper<GqlPageInfo>;
   Query: ResolverTypeWrapper<{}>;
+  SignInUserInput: GqlSignInUserInput;
+  SignUpUserInput: GqlSignUpUserInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   UpdateUserInput: GqlUpdateUserInput;
   User: ResolverTypeWrapper<User>;
@@ -184,12 +194,13 @@ export type GqlResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type GqlResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
-  CreateUserInput: GqlCreateUserInput;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
   PageInfo: GqlPageInfo;
   Query: {};
+  SignInUserInput: GqlSignInUserInput;
+  SignUpUserInput: GqlSignUpUserInput;
   String: Scalars['String']['output'];
   UpdateUserInput: GqlUpdateUserInput;
   User: User;
@@ -228,12 +239,13 @@ export type GqlMutationResolvers<
   ContextType = Context,
   ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation'],
 > = {
-  createUser?: Resolver<
-    GqlResolversTypes['User'],
+  signIn?: Resolver<
+    Maybe<GqlResolversTypes['String']>,
     ParentType,
     ContextType,
-    RequireFields<GqlMutationCreateUserArgs, 'input'>
+    RequireFields<GqlMutationSignInArgs, 'input'>
   >;
+  signUp?: Resolver<GqlResolversTypes['User'], ParentType, ContextType, RequireFields<GqlMutationSignUpArgs, 'input'>>;
   updateUser?: Resolver<
     GqlResolversTypes['User'],
     ParentType,
@@ -256,7 +268,6 @@ export type GqlQueryResolvers<
   ParentType extends GqlResolversParentTypes['Query'] = GqlResolversParentTypes['Query'],
 > = {
   getUsers?: Resolver<Maybe<Array<Maybe<GqlResolversTypes['User']>>>, ParentType, ContextType>;
-  userToken?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
   users?: Resolver<
     Maybe<GqlResolversTypes['UserConnection']>,
     ParentType,

@@ -1,4 +1,4 @@
-import { err, ok, Result } from 'neverthrow';
+import { err, ok, okAsync, Result, ResultAsync } from 'neverthrow';
 import { RawPassword } from '../objects/RawPassword.object';
 import { HashingPassword } from '../objects/HashingPassword.object';
 import User, { UpdatedUser } from '../entities/User.entity';
@@ -40,11 +40,11 @@ const validatedUserCommand: ValidatedUseCommandResult = (command) => {
   });
 };
 
-type UpdatedUserResult = (command: ValidatedUserCommand) => Result<UpdatedUser, Error>;
+type UpdatedUserResult = (command: ValidatedUserCommand) => ResultAsync<UpdatedUser, Error>;
 
 const updatedUser: UpdatedUserResult = (command) => {
   const hashingPasswordResult = HashingPassword(command.input.password);
-  const values = Result.combine([hashingPasswordResult]);
+  const values = ResultAsync.combine([hashingPasswordResult]);
   return values.map(([password]) => ({
     _id: command.user._id,
     password,
@@ -52,8 +52,8 @@ const updatedUser: UpdatedUserResult = (command) => {
 };
 
 // workflow: invalidatedUserCommand => validatedUserCommand => updatedUser
-type UpdateUserWorkflow = (command: InvalidatedUserCommand) => Result<UpdatedUser, Error>;
+type UpdateUserWorkflow = (command: InvalidatedUserCommand) => ResultAsync<UpdatedUser, Error>;
 const updateUserWorkflow: UpdateUserWorkflow = (command) =>
-  ok(command).andThen(validatedUserCommand).andThen(updatedUser);
+  okAsync(command).andThen(validatedUserCommand).andThen(updatedUser);
 
 export default updateUserWorkflow;

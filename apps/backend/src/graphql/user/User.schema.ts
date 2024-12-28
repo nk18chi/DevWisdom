@@ -25,15 +25,20 @@ type PageInfo {
 type Query {
   users(first: Int!, after: String): UserConnection
   getUsers: [User]
-  userToken: String @cacheControl(maxAge: 0) @rateLimit(limit: 3, duration: 5)
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User!
+  signUp(input: SignUpUserInput!): User! @rateLimit(limit: 5, duration: 60)
+  signIn(input: SignInUserInput!): String @cacheControl(maxAge: 0) @rateLimit(limit: 1, duration: 5)
   updateUser(input: UpdateUserInput!): User!
 }
 
-input CreateUserInput {
+input SignUpUserInput {
+  email: String!
+  password: String!
+}
+
+input SignInUserInput {
   email: String!
   password: String!
 }

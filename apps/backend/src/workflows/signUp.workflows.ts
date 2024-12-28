@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { ok, Result } from 'neverthrow';
+import { Result, ResultAsync, okAsync, errAsync } from 'neverthrow';
 import { GqlUserStatus } from '../graphql/types';
 import { Email } from '../objects/Email.object';
 import { RawPassword } from '../objects/RawPassword.object';
@@ -30,24 +30,27 @@ const validatedUser: ValidatedUserResult = (model) => {
   }));
 };
 
-type CreatedUserResult = (model: ValidatedUser) => Result<CreatedUser, Error>;
-
+type CreatedUserResult = (model: ValidatedUser) => ResultAsync<CreatedUser, Error>;
 const createdUser: CreatedUserResult = (model) => {
   const mongoIdResult = MongoId(new Types.ObjectId().toString());
-  const hashingPasswordResult = HashingPassword(model.password);
-  const values = Result.combine([mongoIdResult, hashingPasswordResult]);
+  const values = Result.combine([mongoIdResult]);
+  if (values.isErr()) return errAsync(values.error);
+  const [mongoId] = values.value;
 
-  return values.map(([_id, hashingPassword]) => ({
+  const hashingPasswordResult = HashingPassword(model.password);
+  const asyncValues = ResultAsync.combine([hashingPasswordResult]);
+
+  return asyncValues.map(([hashingPassword]) => ({
     ...model,
-    _id,
-    status: GqlUserStatus.Active,
-    emailVerified: false,
+    _id: mongoId,
+    status: GqlUserStatus.Active as const,
+    emailVerified: false as const,
     password: hashingPassword,
   }));
 };
 
 // workflow: invalidatedUser => validatedUser => createdUser
-type CreateUserWorkflow = (model: InvalidatedUser) => Result<CreatedUser, Error>;
-const createUserWorkflow: CreateUserWorkflow = (model) => ok(model).andThen(validatedUser).andThen(createdUser);
+type signUpWorkflow = (model: InvalidatedUser) => ResultAsync<CreatedUser, Error>;
+const signUpWorkflow: signUpWorkflow = (model) => okAsync(model).andThen(validatedUser).andThen(createdUser);
 
-export default createUserWorkflow;
+export default signUpWorkflow;
