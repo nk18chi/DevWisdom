@@ -29,7 +29,7 @@ type Query {
 
 type Mutation {
   signUp(input: SignUpUserInput!): User! @rateLimit(limit: 5, duration: 60)
-  signIn(input: SignInUserInput!): String @cacheControl(maxAge: 0) @rateLimit(limit: 1, duration: 5)
+  signIn(input: SignInUserInput!): String! @cacheControl(maxAge: 0) @rateLimit(limit: 1, duration: 5)
   updateUser(input: UpdateUserInput!): User!
 }
 

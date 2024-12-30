@@ -1,13 +1,13 @@
-import { Types } from 'mongoose';
-import jwt from 'jsonwebtoken';
 import { ok, okAsync } from 'neverthrow';
 import User from '../../repositories/user/User.schema';
 import { GqlResolvers } from '../types';
-import { getUserById, saveCreatedUser, updateUser } from '../../repositories/user/User.repository';
+import { getUserByEmail, getUserById, saveCreatedUser, updateUser } from '../../repositories/user/User.repository';
 import updateUserWorkflow from '../../workflows/updateUser.workflows';
+import signInWorkflow from '../../workflows/signIn.workflows';
 import { MongoId } from '../../objects/MongoId.object';
 import signUpWorkflow from '../../workflows/signUp.workflows';
 import getAuthorizedUser from '../../services/User.service';
+import { Email } from '../../objects/Email.object';
 
 const userResolver: GqlResolvers = {
   Query: {
@@ -48,9 +48,32 @@ const userResolver: GqlResolvers = {
       );
     },
 
-    signIn: async () => {
-      const privateKey = process.env.JWT_PRIVATE_KEY.replace(/\\n/g, '\n');
-      return jwt.sign({ _id: new Types.ObjectId('676de19c6bb885d2b8d55b53') }, privateKey);
+    signIn: async (_, { input }) => {
+      const workflow = signInWorkflow;
+      const preprocess = await Email(input.email)
+        .asyncAndThen(getUserByEmail)
+        .match(
+          (user) => {
+            const invalidatedUserCommand = {
+              input: {
+                email: input.email,
+                password: input.password,
+              },
+              user,
+            };
+            return ok(invalidatedUserCommand);
+          },
+          (error) => {
+            throw error;
+          },
+        );
+      const result = preprocess.asyncAndThen(workflow);
+      return result.match(
+        (token) => token.toString(),
+        (error) => {
+          throw error;
+        },
+      );
     },
 
     updateUser: async (_, { input }, context) => {

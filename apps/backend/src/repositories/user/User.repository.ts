@@ -2,6 +2,7 @@ import { errAsync, okAsync, ResultAsync } from 'neverthrow';
 import UserModel from './User.schema';
 import { CreatedUser, UpdatedUser, User } from '../../entities/User.entity';
 import { MongoId } from '../../objects/MongoId.object';
+import { Email } from '../../objects/Email.object';
 
 export const findUserById = (id: MongoId): ResultAsync<User | null, Error> =>
   ResultAsync.fromPromise(UserModel.findById(id).lean(), (err) => err as Error).andThen((user) => {
@@ -9,8 +10,22 @@ export const findUserById = (id: MongoId): ResultAsync<User | null, Error> =>
     return okAsync(user);
   });
 
+export const findUserByEmail = (email: Email): ResultAsync<User | null, Error> =>
+  ResultAsync.fromPromise(UserModel.findOne({ email: email.toString() }).lean(), (err) => err as Error).andThen(
+    (user) => {
+      if (!user) return okAsync(null);
+      return okAsync(user);
+    },
+  );
+
 export const getUserById = (id: MongoId): ResultAsync<User, Error> =>
   findUserById(id).andThen((user) => {
+    if (!user) return errAsync(new Error('Database Error: User not found'));
+    return okAsync(user);
+  });
+
+export const getUserByEmail = (email: Email): ResultAsync<User, Error> =>
+  findUserByEmail(email).andThen((user) => {
     if (!user) return errAsync(new Error('Database Error: User not found'));
     return okAsync(user);
   });
