@@ -1,6 +1,18 @@
-import userTypeDef from './user/User.schema';
-import cacheControlTypeDef from './cacheControl/CacheControl.schema';
+import findFilesByExtension from './utils/findFilesByExtension';
 
-const typeDefs = [cacheControlTypeDef, userTypeDef];
+const currentDir = __dirname;
 
-export default typeDefs;
+const directiveSchemaFiles = findFilesByExtension(`${currentDir}/directive`, '.schema.ts');
+const querySchemaFiles = findFilesByExtension(`${currentDir}/query`, '.schema.ts');
+const mutationSchemaFiles = findFilesByExtension(`${currentDir}/mutation`, '.schema.ts');
+
+const schemas = async () =>
+  (
+    await Promise.all(
+      [directiveSchemaFiles, querySchemaFiles, mutationSchemaFiles]
+        .map(async (files) => Promise.all(files.map((filePath) => import(filePath).then((module) => module.default))))
+        .flatMap((schema) => schema),
+    )
+  ).flatMap((schema) => schema);
+
+export default schemas;

@@ -1,5 +1,17 @@
-import userResolver from './user/User.resolver';
+import findFilesByExtension from './utils/findFilesByExtension';
 
-const resolvers = [userResolver];
+const currentDir = __dirname;
 
-export default resolvers;
+const queryResolverFiles = findFilesByExtension(`${currentDir}/query`, '.resolver.ts');
+const mutationResolverFiles = findFilesByExtension(`${currentDir}/mutation`, '.resolver.ts');
+
+const schemas = async () =>
+  (
+    await Promise.all(
+      [queryResolverFiles, mutationResolverFiles]
+        .map(async (files) => Promise.all(files.map((filePath) => import(filePath).then((module) => module.default))))
+        .flatMap((schema) => schema),
+    )
+  ).flatMap((schema) => schema);
+
+export default schemas;

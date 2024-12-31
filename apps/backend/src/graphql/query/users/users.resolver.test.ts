@@ -4,16 +4,16 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { applyMiddleware } from 'graphql-middleware';
 import { rateLimitDirective } from 'graphql-rate-limit-directive';
 import { Types } from 'mongoose';
-import Context from '../../interfaces/Context.interface';
-import typeDefs from '../schemas';
-import resolvers from '../resolvers';
-import User from '../../repositories/user/User.schema';
-import { GET_QUERY_USERS } from '../gql/User.gql';
-import permissions from '../authorizations/permissions';
-import IUser from '../../entities/User.entity';
-import { GqlUserConnection } from '../types';
-import { MongoId } from '../../objects/MongoId.object';
-import userDataLoader from '../../dataloader/User.dataLoader';
+import Context from '../../../interfaces/Context.interface';
+import typeDefs from '../../schemas';
+import resolvers from '../../resolvers';
+import User from '../../../repositories/user/User.schema';
+import { GET_QUERY_USERS } from './users.gql';
+import permissions from '../../authorizations/permissions';
+import IUser from '../../../entities/User.entity';
+import { GqlUserConnection } from '../../types';
+import { MongoId } from '../../../objects/MongoId.object';
+import userDataLoader from '../../../dataloader/User.dataLoader';
 
 const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } = rateLimitDirective();
 
@@ -44,13 +44,13 @@ const contextMock = {
   },
 };
 
-describe('User.resolver.ts', () => {
+describe('users.resolver.ts', async () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chainableMock: any = {};
   const schema = applyMiddleware(
     makeExecutableSchema({
-      typeDefs: [...typeDefs, rateLimitDirectiveTypeDefs],
-      resolvers,
+      typeDefs: [...(await typeDefs()), rateLimitDirectiveTypeDefs],
+      resolvers: await resolvers(),
     }),
     permissions,
   );

@@ -34,8 +34,8 @@ const runServer = async () => {
 
   const schema = applyMiddleware(
     makeExecutableSchema({
-      typeDefs: [...typeDefs, rateLimitDirectiveTypeDefs],
-      resolvers,
+      typeDefs: [...(await typeDefs()), rateLimitDirectiveTypeDefs],
+      resolvers: await resolvers(),
     }),
     permissions,
   );
