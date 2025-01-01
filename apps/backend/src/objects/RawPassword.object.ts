@@ -12,7 +12,7 @@ export function RawPassword(password: string): Result<RawPassword, ValidationErr
   const result = RawPasswordSchema.safeParse(password);
 
   if (!result.success) {
-    return err(fromZodError(result.error));
+    return err(fromZodError(result.error, { prefix: null }));
   }
 
   if (!isStrongPassword(password)) {

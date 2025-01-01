@@ -15,7 +15,7 @@ export function HashingPassword(password: RawPassword): ResultAsync<HashingPassw
   const result = HashingPasswordSchema.safeParse(password.toString());
 
   if (!result.success) {
-    return errAsync(fromZodError(result.error));
+    return errAsync(fromZodError(result.error, { prefix: null }));
   }
 
   return ResultAsync.fromPromise(bcrypt.hash(password.toString(), saltRounds), (err) => err as Error).andThen((hash) =>

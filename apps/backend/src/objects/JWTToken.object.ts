@@ -13,7 +13,7 @@ export function JWTToken(token: string): Result<JWTToken, ValidationError> {
   const result = JWTTokenSchema.safeParse(token);
 
   if (!result.success) {
-    return err(fromZodError(result.error));
+    return err(fromZodError(result.error, { prefix: null }));
   }
 
   return ok(iso<JWTToken>().wrap(token));

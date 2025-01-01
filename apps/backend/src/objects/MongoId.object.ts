@@ -12,7 +12,7 @@ export function MongoId(id: string): Result<MongoId, ValidationError> {
   const result = MongoIdSchema.safeParse(id);
 
   if (!result.success) {
-    return err(fromZodError(result.error));
+    return err(fromZodError(result.error, { prefix: null }));
   }
 
   return ok(iso<MongoId>().wrap(id));

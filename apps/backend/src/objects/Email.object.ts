@@ -11,7 +11,7 @@ export function Email(email: string): Result<Email, ValidationError> {
   const result = EmailSchema.safeParse(email);
 
   if (!result.success) {
-    return err(fromZodError(result.error));
+    return err(fromZodError(result.error, { prefix: null }));
   }
 
   return ok(iso<Email>().wrap(email));
