@@ -1,6 +1,6 @@
 const signInTypeDef = `#graphql
-type Mutation {
-  signIn(input: SignInUserInput!): String! @cacheControl(maxAge: 0) @rateLimit(limit: 1, duration: 5)
+type Query {
+  signIn(input: SignInUserInput!): String! @cacheControl(maxAge: 0) @rateLimit(limit: 5, duration: 300)
 }
 
 input SignInUserInput {
