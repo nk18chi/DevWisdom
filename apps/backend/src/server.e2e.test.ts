@@ -84,7 +84,6 @@ describe('e2e: server.ts', () => {
         sort: vi.fn().mockReturnThis(),
         limit: vi.fn().mockReturnThis(),
         lean: vi.fn().mockRejectedValue(new Error('MongoError')),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
       const testApp = await runServer();
       const res = await request(testApp)

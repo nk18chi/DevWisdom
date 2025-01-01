@@ -22,7 +22,6 @@ describe('userDataloader', () => {
   beforeEach(() => {
     vi.spyOn(User, 'find').mockReturnValue({
       lean: vi.fn().mockReturnValue(mockUsers),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
   });
   test('should set unique userIds in fetching users from DB', async () => {

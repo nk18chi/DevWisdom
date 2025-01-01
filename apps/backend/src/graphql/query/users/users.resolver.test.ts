@@ -17,7 +17,6 @@ import userDataLoader from '../../../dataloader/User.dataLoader';
 
 const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } = rateLimitDirective();
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const usersMock: any = [
   {
     _id: '666a86b3ee5b217b01281a39',
@@ -45,7 +44,6 @@ const contextMock = {
 };
 
 describe('users.resolver.ts', async () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let chainableMock: any = {};
   const schema = applyMiddleware(
     makeExecutableSchema({

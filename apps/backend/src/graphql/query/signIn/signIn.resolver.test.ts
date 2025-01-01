@@ -37,7 +37,6 @@ describe('signIn.resolver.ts', async () => {
     vi.useFakeTimers();
     vi.advanceTimersByTime(1000 * 60 * 5); // 5 minutes;
     vi.spyOn(userRepository, 'getUserByEmail').mockReturnValue(okAsync(usersMock));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.spyOn(signInUserWorkflow, 'default').mockReturnValue(okAsync('token') as unknown as any);
   });
   const schema = applyMiddleware(
