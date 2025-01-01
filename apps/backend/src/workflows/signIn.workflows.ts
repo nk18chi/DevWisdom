@@ -1,7 +1,6 @@
 import { errAsync, okAsync, Result, ResultAsync } from 'neverthrow';
 import bcrypt from 'bcrypt';
 import { ValidationError } from 'zod-validation-error';
-import { RawPassword } from '../objects/RawPassword.object';
 import User from '../entities/User.entity';
 import { Email } from '../objects/Email.object';
 import { GqlUserStatus } from '../graphql/types';
@@ -14,7 +13,7 @@ interface InvalidatedUserInput {
 
 interface ValidatedUserInput {
   email: Email;
-  password: RawPassword;
+  password: string; // should not be RawPassword since validation of RawPassword is not needed
 }
 
 interface InvalidatedUserCommand {
@@ -31,10 +30,9 @@ type ValidatedUseCommandResult = (command: InvalidatedUserCommand) => Result<Val
 
 const validatedUserCommand: ValidatedUseCommandResult = (command) => {
   const emailResult = Email(command.input.email);
-  const passwordResult = RawPassword(command.input.password);
-  const values = Result.combine([emailResult, passwordResult]);
-
-  return values.map(([email, password]) => ({
+  const values = Result.combine([emailResult]);
+  const { password } = command.input;
+  return values.map(([email]) => ({
     input: {
       email,
       password,
