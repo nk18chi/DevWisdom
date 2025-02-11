@@ -23,7 +23,6 @@ const validatedUser: ValidatedUserResult = (model) => {
   const emailResult = Email(model.email);
   const passwordResult = RawPassword(model.password);
   const values = Result.combine([emailResult, passwordResult]);
-
   return values.map(([email, password]) => ({
     email,
     password,
