@@ -17,7 +17,7 @@ interface ValidatedUser {
   password: RawPassword;
 }
 
-type ValidatedUserResult = (model: InvalidatedUser) => Result<ValidatedUser, Error>;
+type ValidatedUserResult = (_model: InvalidatedUser) => Result<ValidatedUser, Error>;
 
 const validatedUser: ValidatedUserResult = (model) => {
   const emailResult = Email(model.email);
@@ -29,7 +29,7 @@ const validatedUser: ValidatedUserResult = (model) => {
   }));
 };
 
-type CreatedUserResult = (model: ValidatedUser) => ResultAsync<CreatedUser, Error>;
+type CreatedUserResult = (_model: ValidatedUser) => ResultAsync<CreatedUser, Error>;
 const createdUser: CreatedUserResult = (model) => {
   const mongoIdResult = MongoId(new Types.ObjectId().toString());
   const values = Result.combine([mongoIdResult]);
@@ -49,7 +49,7 @@ const createdUser: CreatedUserResult = (model) => {
 };
 
 // workflow: invalidatedUser => validatedUser => createdUser
-type signUpWorkflow = (model: InvalidatedUser) => ResultAsync<CreatedUser, Error>;
+type signUpWorkflow = (_model: InvalidatedUser) => ResultAsync<CreatedUser, Error>;
 const signUpWorkflow: signUpWorkflow = (model) => okAsync(model).andThen(validatedUser).andThen(createdUser);
 
 export default signUpWorkflow;

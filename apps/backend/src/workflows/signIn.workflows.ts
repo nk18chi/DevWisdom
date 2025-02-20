@@ -26,7 +26,7 @@ interface ValidatedUserCommand {
   user: User;
 }
 
-type ValidatedUseCommandResult = (command: InvalidatedUserCommand) => Result<ValidatedUserCommand, Error>;
+type ValidatedUseCommandResult = (_command: InvalidatedUserCommand) => Result<ValidatedUserCommand, Error>;
 
 const validatedUserCommand: ValidatedUseCommandResult = (command) => {
   const emailResult = Email(command.input.email);
@@ -41,7 +41,7 @@ const validatedUserCommand: ValidatedUseCommandResult = (command) => {
   }));
 };
 
-type SignedInUserResult = (command: ValidatedUserCommand) => ResultAsync<JWTToken, ValidationError | Error>;
+type SignedInUserResult = (_command: ValidatedUserCommand) => ResultAsync<JWTToken, ValidationError | Error>;
 
 const signedInUser: SignedInUserResult = (command) =>
   ResultAsync.fromPromise(
@@ -66,7 +66,7 @@ const signedInUser: SignedInUserResult = (command) =>
   });
 
 // workflow: invalidatedUserCommand => validatedUserCommand => signedInUserJWTToken
-type SignInUserWorkflow = (command: InvalidatedUserCommand) => ResultAsync<JWTToken, Error>;
+type SignInUserWorkflow = (_command: InvalidatedUserCommand) => ResultAsync<JWTToken, Error>;
 const signInUserWorkflow: SignInUserWorkflow = (command) =>
   okAsync(command).andThen(validatedUserCommand).andThen(signedInUser);
 

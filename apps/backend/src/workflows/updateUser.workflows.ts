@@ -21,7 +21,7 @@ interface ValidatedUserCommand {
   user: User;
 }
 
-type ValidatedUseCommandResult = (command: InvalidatedUserCommand) => Result<ValidatedUserCommand, Error>;
+type ValidatedUseCommandResult = (_command: InvalidatedUserCommand) => Result<ValidatedUserCommand, Error>;
 
 const validatedUserCommand: ValidatedUseCommandResult = (command) => {
   const passwordResult = RawPassword(command.input.password);
@@ -40,7 +40,7 @@ const validatedUserCommand: ValidatedUseCommandResult = (command) => {
   });
 };
 
-type UpdatedUserResult = (command: ValidatedUserCommand) => ResultAsync<UpdatedUser, Error>;
+type UpdatedUserResult = (_command: ValidatedUserCommand) => ResultAsync<UpdatedUser, Error>;
 
 const updatedUser: UpdatedUserResult = (command) => {
   const hashingPasswordResult = HashingPassword(command.input.password);
@@ -52,7 +52,7 @@ const updatedUser: UpdatedUserResult = (command) => {
 };
 
 // workflow: invalidatedUserCommand => validatedUserCommand => updatedUser
-type UpdateUserWorkflow = (command: InvalidatedUserCommand) => ResultAsync<UpdatedUser, Error>;
+type UpdateUserWorkflow = (_command: InvalidatedUserCommand) => ResultAsync<UpdatedUser, Error>;
 const updateUserWorkflow: UpdateUserWorkflow = (command) =>
   okAsync(command).andThen(validatedUserCommand).andThen(updatedUser);
 

@@ -16,5 +16,4 @@ const GET_QUERY_USERS = `
   }
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export { GET_QUERY_USERS };

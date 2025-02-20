@@ -46,7 +46,6 @@ describe('server.ts', () => {
         req: {
           headers: {
             authorization:
-              // eslint-disable-next-line max-len
               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZkZTE5YzZiYjg4NWQyYjhkNTViNTMiLCJpYXQiOjE3MzUyNTQ1NjZ9.W1WuV1jEXzEIecYeiLZ0oqTPJC4tJWecEwylHm1HPZ8',
           },
         },

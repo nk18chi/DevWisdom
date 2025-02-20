@@ -8,7 +8,6 @@ import { GET_QUERY_USERS } from './graphql/query/users/users.gql';
 vi.mock('./config/logger');
 vi.mock('./mongo/connect');
 const authorizationToken =
-  // eslint-disable-next-line max-len
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZkZTE5YzZiYjg4NWQyYjhkNTViNTMiLCJpYXQiOjE3MzUyNTQ1NjZ9.W1WuV1jEXzEIecYeiLZ0oqTPJC4tJWecEwylHm1HPZ8';
 
 describe('e2e: server.ts', () => {

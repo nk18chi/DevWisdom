@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 import { RawPassword } from './RawPassword.object';
 
 const errorMessage =
-  // eslint-disable-next-line max-len
   'Password must be more than eight letters and contain at least one uppercase letter, one lowercase letter, one number, and one special character';
 
 describe('RawPassword', () => {

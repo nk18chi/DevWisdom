@@ -60,7 +60,6 @@ const runServer = async () => {
             });
 
             if (complexity > MAX_COMPLEXITY) {
-              // eslint-disable-next-line max-len
               const errorMessage = `Sorry, too complicated query! ${complexity} exceeded the maximum allowed complexity of ${MAX_COMPLEXITY} by ${operationName}`;
               const error = new Error(errorMessage);
               logger.error(errorMessage, error);

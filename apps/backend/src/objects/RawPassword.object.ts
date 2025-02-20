@@ -18,7 +18,6 @@ export function RawPassword(password: string): Result<RawPassword, ValidationErr
   if (!isStrongPassword(password)) {
     return err(
       new Error(
-        // eslint-disable-next-line max-len
         'Password must be more than eight letters and contain at least one uppercase letter, one lowercase letter, one number, and one special character',
       ),
     );
