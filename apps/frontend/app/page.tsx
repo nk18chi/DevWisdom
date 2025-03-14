@@ -1,16 +1,16 @@
-import { Button } from '@workspace/ui/components/button';
+import { Footer } from '@/components/Footer';
+import { Hero } from '@/components/Hero';
+import { Navbar } from '@/components/Navbar';
+import { TagList } from '@/components/TagList';
 
 export default async function Home() {
   return (
     <main>
-      <div>Header</div>
-      <div>Random Wisdom</div>
-      <div>Random Button</div>
-      <div>Tag</div>
-      <div>Tag List</div>
-      <div>Footer</div>
+      <Navbar />
+      <Hero />
+      <TagList />
+      <Footer />
 
-      <Button>Click me</Button>
       {/* <RelayPaginationComponent />
       <ErrorBoundary fallback={<div>Something went wrong</div>}>
         <Suspense fallback={<>loading</>}>

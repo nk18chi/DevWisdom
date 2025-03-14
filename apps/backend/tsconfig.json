@@ -23,5 +23,5 @@
     "sourceRoot": "/"
   },
   "include": ["./src/**/*.tsx", "./src/**/*.ts", "environment.d.ts"],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
+  "exclude": ["**/*.test.tsx"]
 }
