@@ -1,9 +1,11 @@
 import findFilesByExtension from './utils/findFilesByExtension';
+import path from 'path';
 
 const currentDir = __dirname;
+const fileExtension = path.extname(__filename) === '.js' ? '.resolver.js' : '.resolver.ts';
 
-const queryResolverFiles = findFilesByExtension(`${currentDir}/query`, '.resolver.ts');
-const mutationResolverFiles = findFilesByExtension(`${currentDir}/mutation`, '.resolver.ts');
+const queryResolverFiles = findFilesByExtension(`${currentDir}/query`, fileExtension);
+const mutationResolverFiles = findFilesByExtension(`${currentDir}/mutation`, fileExtension);
 
 const schemas = async () =>
   (

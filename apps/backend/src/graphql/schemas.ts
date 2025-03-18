@@ -1,10 +1,12 @@
 import findFilesByExtension from './utils/findFilesByExtension';
+import path from 'path';
 
 const currentDir = __dirname;
+const fileExtension = path.extname(__filename) === '.js' ? '.schema.js' : '.schema.ts';
 
-const directiveSchemaFiles = findFilesByExtension(`${currentDir}/directive`, '.schema.ts');
-const querySchemaFiles = findFilesByExtension(`${currentDir}/query`, '.schema.ts');
-const mutationSchemaFiles = findFilesByExtension(`${currentDir}/mutation`, '.schema.ts');
+const directiveSchemaFiles = findFilesByExtension(`${currentDir}/directive`, fileExtension);
+const querySchemaFiles = findFilesByExtension(`${currentDir}/query`, fileExtension);
+const mutationSchemaFiles = findFilesByExtension(`${currentDir}/mutation`, fileExtension);
 
 const schemas = async () =>
   (
