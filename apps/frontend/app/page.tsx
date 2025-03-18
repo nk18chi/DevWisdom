@@ -5,7 +5,7 @@ import { TagList } from '@/components/TagList';
 
 export default async function Home() {
   return (
-    <main>
+    <main className="mx-auto max-w-screen-xl px-2">
       <Navbar />
       <Hero />
       <TagList />

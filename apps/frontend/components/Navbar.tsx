@@ -49,57 +49,55 @@ const Navbar = ({
 }: NavbarProps) => {
   return (
     <section className="py-4">
-      <div className="container">
-        <nav className="hidden justify-between lg:flex">
-          <div className="flex items-center gap-6">
-            <a href={logo.url} className="flex items-center gap-2">
-              <Image src={logo.src} width={32} height={32} alt={logo.alt} className="w-7 scale-x-[-1]" />
-              <span className="text-lg font-semibold">{logo.title}</span>
-            </a>
-          </div>
-          <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <a href={auth.login.url}>{auth.login.text}</a>
-            </Button>
-            <Button asChild size="sm">
-              <a href={auth.signup.url}>{auth.signup.text}</a>
-            </Button>
-          </div>
-        </nav>
-        <div className="block lg:hidden">
-          <div className="flex items-center justify-between">
-            <a href={logo.url} className="flex items-center gap-2">
-              <Image src={logo.src} width={32} height={32} alt={logo.alt} className="w78 scale-x-[-1]" />
-              <span className="text-lg font-semibold">{logo.title}</span>
-            </a>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="size-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>
-                    <a href={logo.url} className="flex items-center gap-2">
-                      <Image src={logo.src} width={32} height={32} alt={logo.alt} className="w-8" />
-                      <span className="text-lg font-semibold">{logo.title}</span>
-                    </a>
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="my-6 flex flex-col gap-6">
-                  <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
-                      <a href={auth.login.url}>{auth.login.text}</a>
-                    </Button>
-                    <Button asChild>
-                      <a href={auth.signup.url}>{auth.signup.text}</a>
-                    </Button>
-                  </div>
+      <nav className="hidden justify-between lg:flex">
+        <div className="flex items-center gap-6">
+          <a href={logo.url} className="flex items-center gap-2">
+            <Image src={logo.src} width={32} height={32} alt={logo.alt} className="w-7 scale-x-[-1]" />
+            <span className="text-lg font-semibold">{logo.title}</span>
+          </a>
+        </div>
+        <div className="flex gap-2">
+          <Button asChild variant="outline" size="sm">
+            <a href={auth.login.url}>{auth.login.text}</a>
+          </Button>
+          <Button asChild size="sm">
+            <a href={auth.signup.url}>{auth.signup.text}</a>
+          </Button>
+        </div>
+      </nav>
+      <div className="block lg:hidden">
+        <div className="flex items-center justify-between">
+          <a href={logo.url} className="flex items-center gap-2">
+            <Image src={logo.src} width={32} height={32} alt={logo.alt} className="w78 scale-x-[-1]" />
+            <span className="text-lg font-semibold">{logo.title}</span>
+          </a>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Menu className="size-4" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle>
+                  <a href={logo.url} className="flex items-center gap-2">
+                    <Image src={logo.src} width={32} height={32} alt={logo.alt} className="w-8" />
+                    <span className="text-lg font-semibold">{logo.title}</span>
+                  </a>
+                </SheetTitle>
+              </SheetHeader>
+              <div className="my-6 flex flex-col gap-6">
+                <div className="flex flex-col gap-3">
+                  <Button asChild variant="outline">
+                    <a href={auth.login.url}>{auth.login.text}</a>
+                  </Button>
+                  <Button asChild>
+                    <a href={auth.signup.url}>{auth.signup.text}</a>
+                  </Button>
                 </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </section>
