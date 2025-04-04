@@ -63,7 +63,7 @@ const Hero = ({
   },
 }: HeroProps) => {
   return (
-    <section>
+    <section id="hero" data-testid="hero">
       <div className="container grid items-center gap-10 lg:gap-20">
         <div className="mx-auto flex flex-col items-center text-center md:ml-auto lg:max-w-3xl lg:items-start lg:text-left">
           <Testimonial />

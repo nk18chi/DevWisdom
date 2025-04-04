@@ -49,7 +49,7 @@ const Navbar = ({
   },
 }: NavbarProps) => {
   return (
-    <section className="py-4">
+    <section id="navigation" data-testid="navigation" className="py-4">
       <nav className="hidden justify-between lg:flex">
         <div className="flex items-center gap-6">
           <a href={logo.url} className="flex items-center gap-2">

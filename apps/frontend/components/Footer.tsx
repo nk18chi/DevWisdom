@@ -14,7 +14,7 @@ const Footer = ({
   ],
 }: FooterProps) => {
   return (
-    <section className="py-12">
+    <section id="footer" data-testid="footer" className="py-12">
       <footer>
         <div className="mt-24 flex flex-col justify-between gap-4 border-t pt-8 text-sm font-medium text-muted-foreground md:flex-row md:items-center">
           <p>{copyright}</p>

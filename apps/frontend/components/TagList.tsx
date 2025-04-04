@@ -30,7 +30,7 @@ const TagList = ({
   ],
 }: TagListProps) => {
   return (
-    <section className="py-12">
+    <section id="tag-list" data-testid="tag-list" className="py-12">
       <div className="container flex flex-col items-center text-center">
         <h1 className="my-12 text-pretty text-2xl font-bold lg:text-4xl">{heading}</h1>
       </div>
