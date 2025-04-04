@@ -2,7 +2,7 @@
 
 import Head from 'next/head';
 import * as Sentry from '@sentry/nextjs';
-import React, { use, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import RelayPaginationComponent from '@/components/RelayPaginationComponent';
 
 export default function Page() {

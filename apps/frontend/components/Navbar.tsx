@@ -1,4 +1,5 @@
-import { Book, Menu, Sunset, Trees, Zap } from 'lucide-react';
+import React from 'react';
+import { Menu } from 'lucide-react';
 import { Button } from '@workspace/ui/components/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@workspace/ui/components/sheet';
 import Image from 'next/image';

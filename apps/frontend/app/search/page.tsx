@@ -1,7 +1,4 @@
-import { Footer } from '@/components/Footer';
-import { Hero } from '@/components/Hero';
 import { Navbar } from '@/components/Navbar';
-import { TagList } from '@/components/TagList';
 import { Button } from '@workspace/ui/components/button';
 
 export default function SearchPage() {

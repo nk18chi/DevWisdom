@@ -1,9 +1,7 @@
 import React from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import SearchPage from './page';
-import { act, render, screen } from '@testing-library/react';
-import { Navbar } from '@/components/Navbar';
-import { Button as WorkspaceButton } from '@workspace/ui/components/button';
+import { render, screen } from '@testing-library/react';
 
 describe('Search Page', () => {
   describe('Tag', () => {

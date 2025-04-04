@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { HttpLink } from '@apollo/client';
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
 import { relayStylePagination } from '@apollo/client/utilities';
