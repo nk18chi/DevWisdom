@@ -43,7 +43,8 @@ export default [
       'object-curly-newline': 'off',
       'implicit-arrow-linebreak': 'off',
       'no-redeclare': 'off',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
 
