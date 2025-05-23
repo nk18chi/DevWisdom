@@ -2,7 +2,8 @@ import findFilesByExtension from './utils/findFilesByExtension';
 import path from 'path';
 
 const currentDir = __dirname;
-const fileExtension = path.extname(__filename) === '.js' ? '.schema.js' : '.schema.ts';
+/* v8 ignore next */
+const fileExtension = path.extname(__filename) === '.js' ? '.schema.js' : '.schema.ts'; // this if condition is for build time
 
 const directiveSchemaFiles = findFilesByExtension(`${currentDir}/directive`, fileExtension);
 const querySchemaFiles = findFilesByExtension(`${currentDir}/query`, fileExtension);

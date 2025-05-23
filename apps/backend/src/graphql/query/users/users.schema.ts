@@ -9,11 +9,6 @@ type UserEdge {
   cursor: String
 }
 
-type PageInfo {
-  endCursor: String
-  hasNextPage: Boolean
-}
-
 type Query {
   users(first: Int!, after: String): UserConnection
 }
