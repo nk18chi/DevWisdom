@@ -14,3 +14,4 @@ generates:
       contextType: ../interfaces/Context.interface#Context
       mappers:
         User: ../entities/User.entity#User
+        Quote: ../entities/Quote.entity#Quote

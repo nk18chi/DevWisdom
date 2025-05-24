@@ -1,5 +1,6 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { User } from '../entities/User.entity';
+import { Quote } from '../entities/Quote.entity';
 import { Context } from '../interfaces/Context.interface';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -17,6 +18,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  Date: { input: any; output: any };
 };
 
 export enum GqlCacheControlScope {
@@ -46,8 +48,19 @@ export type GqlPageInfo = {
 
 export type GqlQuery = {
   __typename?: 'Query';
+  quote?: Maybe<GqlQuote>;
+  quotes?: Maybe<GqlQuoteConnection>;
   signIn: Scalars['String']['output'];
   users?: Maybe<GqlUserConnection>;
+};
+
+export type GqlQueryQuoteArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type GqlQueryQuotesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first: Scalars['Int']['input'];
 };
 
 export type GqlQuerySignInArgs = {
@@ -58,6 +71,52 @@ export type GqlQueryUsersArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first: Scalars['Int']['input'];
 };
+
+export type GqlQuote = {
+  __typename?: 'Quote';
+  _id: Scalars['ID']['output'];
+  author: Scalars['String']['output'];
+  content: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  isReviewed: Scalars['Boolean']['output'];
+  reports: Array<GqlQuoteReport>;
+  status: GqlQuoteStatus;
+  updatedAt: Scalars['Date']['output'];
+  user: GqlUser;
+};
+
+export type GqlQuoteConnection = {
+  __typename?: 'QuoteConnection';
+  edges?: Maybe<Array<Maybe<GqlQuoteEdge>>>;
+  pageInfo?: Maybe<GqlPageInfo>;
+};
+
+export type GqlQuoteEdge = {
+  __typename?: 'QuoteEdge';
+  cursor?: Maybe<Scalars['String']['output']>;
+  node?: Maybe<GqlQuote>;
+};
+
+export type GqlQuoteReport = {
+  __typename?: 'QuoteReport';
+  _id: Scalars['ID']['output'];
+  comment: Scalars['String']['output'];
+  createdAt: Scalars['String']['output'];
+  status: GqlQuoteReportStatus;
+  updatedAt: Scalars['String']['output'];
+  userId: Scalars['ID']['output'];
+};
+
+export enum GqlQuoteReportStatus {
+  Declined = 'Declined',
+  Resolved = 'Resolved',
+  Unreviewed = 'Unreviewed',
+}
+
+export enum GqlQuoteStatus {
+  Published = 'Published',
+  Unpublished = 'Unpublished',
+}
 
 export type GqlSignInUserInput = {
   email: Scalars['String']['input'];
@@ -173,11 +232,20 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type GqlResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CacheControlScope: GqlCacheControlScope;
+  Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   PageInfo: ResolverTypeWrapper<GqlPageInfo>;
   Query: ResolverTypeWrapper<{}>;
+  Quote: ResolverTypeWrapper<Quote>;
+  QuoteConnection: ResolverTypeWrapper<
+    Omit<GqlQuoteConnection, 'edges'> & { edges?: Maybe<Array<Maybe<GqlResolversTypes['QuoteEdge']>>> }
+  >;
+  QuoteEdge: ResolverTypeWrapper<Omit<GqlQuoteEdge, 'node'> & { node?: Maybe<GqlResolversTypes['Quote']> }>;
+  QuoteReport: ResolverTypeWrapper<GqlQuoteReport>;
+  QuoteReportStatus: GqlQuoteReportStatus;
+  QuoteStatus: GqlQuoteStatus;
   SignInUserInput: GqlSignInUserInput;
   SignUpUserInput: GqlSignUpUserInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -193,11 +261,18 @@ export type GqlResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type GqlResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  Date: Scalars['Date']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
   PageInfo: GqlPageInfo;
   Query: {};
+  Quote: Quote;
+  QuoteConnection: Omit<GqlQuoteConnection, 'edges'> & {
+    edges?: Maybe<Array<Maybe<GqlResolversParentTypes['QuoteEdge']>>>;
+  };
+  QuoteEdge: Omit<GqlQuoteEdge, 'node'> & { node?: Maybe<GqlResolversParentTypes['Quote']> };
+  QuoteReport: GqlQuoteReport;
   SignInUserInput: GqlSignInUserInput;
   SignUpUserInput: GqlSignUpUserInput;
   String: Scalars['String']['output'];
@@ -234,6 +309,10 @@ export type GqlRateLimitDirectiveResolver<
   Args = GqlRateLimitDirectiveArgs,
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export interface GqlDateScalarConfig extends GraphQLScalarTypeConfig<GqlResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
 export type GqlMutationResolvers<
   ContextType = Context,
   ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation'],
@@ -260,6 +339,13 @@ export type GqlQueryResolvers<
   ContextType = Context,
   ParentType extends GqlResolversParentTypes['Query'] = GqlResolversParentTypes['Query'],
 > = {
+  quote?: Resolver<Maybe<GqlResolversTypes['Quote']>, ParentType, ContextType, RequireFields<GqlQueryQuoteArgs, 'id'>>;
+  quotes?: Resolver<
+    Maybe<GqlResolversTypes['QuoteConnection']>,
+    ParentType,
+    ContextType,
+    RequireFields<GqlQueryQuotesArgs, 'first'>
+  >;
   signIn?: Resolver<GqlResolversTypes['String'], ParentType, ContextType, RequireFields<GqlQuerySignInArgs, 'input'>>;
   users?: Resolver<
     Maybe<GqlResolversTypes['UserConnection']>,
@@ -267,6 +353,53 @@ export type GqlQueryResolvers<
     ContextType,
     RequireFields<GqlQueryUsersArgs, 'first'>
   >;
+};
+
+export type GqlQuoteResolvers<
+  ContextType = Context,
+  ParentType extends GqlResolversParentTypes['Quote'] = GqlResolversParentTypes['Quote'],
+> = {
+  _id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
+  author?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<GqlResolversTypes['Date'], ParentType, ContextType>;
+  isReviewed?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType>;
+  reports?: Resolver<Array<GqlResolversTypes['QuoteReport']>, ParentType, ContextType>;
+  status?: Resolver<GqlResolversTypes['QuoteStatus'], ParentType, ContextType>;
+  updatedAt?: Resolver<GqlResolversTypes['Date'], ParentType, ContextType>;
+  user?: Resolver<GqlResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GqlQuoteConnectionResolvers<
+  ContextType = Context,
+  ParentType extends GqlResolversParentTypes['QuoteConnection'] = GqlResolversParentTypes['QuoteConnection'],
+> = {
+  edges?: Resolver<Maybe<Array<Maybe<GqlResolversTypes['QuoteEdge']>>>, ParentType, ContextType>;
+  pageInfo?: Resolver<Maybe<GqlResolversTypes['PageInfo']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GqlQuoteEdgeResolvers<
+  ContextType = Context,
+  ParentType extends GqlResolversParentTypes['QuoteEdge'] = GqlResolversParentTypes['QuoteEdge'],
+> = {
+  cursor?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
+  node?: Resolver<Maybe<GqlResolversTypes['Quote']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GqlQuoteReportResolvers<
+  ContextType = Context,
+  ParentType extends GqlResolversParentTypes['QuoteReport'] = GqlResolversParentTypes['QuoteReport'],
+> = {
+  _id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
+  comment?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<GqlResolversTypes['QuoteReportStatus'], ParentType, ContextType>;
+  updatedAt?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  userId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type GqlUserResolvers<
@@ -300,9 +433,14 @@ export type GqlUserEdgeResolvers<
 };
 
 export type GqlResolvers<ContextType = Context> = {
+  Date?: GraphQLScalarType;
   Mutation?: GqlMutationResolvers<ContextType>;
   PageInfo?: GqlPageInfoResolvers<ContextType>;
   Query?: GqlQueryResolvers<ContextType>;
+  Quote?: GqlQuoteResolvers<ContextType>;
+  QuoteConnection?: GqlQuoteConnectionResolvers<ContextType>;
+  QuoteEdge?: GqlQuoteEdgeResolvers<ContextType>;
+  QuoteReport?: GqlQuoteReportResolvers<ContextType>;
   User?: GqlUserResolvers<ContextType>;
   UserConnection?: GqlUserConnectionResolvers<ContextType>;
   UserEdge?: GqlUserEdgeResolvers<ContextType>;

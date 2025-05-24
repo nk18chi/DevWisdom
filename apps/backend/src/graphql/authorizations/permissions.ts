@@ -6,6 +6,7 @@ const permissions = shield(
     Query: {
       '*': isAuthenticated,
       signIn: allow,
+      quotes: allow,
     },
     Mutation: {
       '*': isAuthenticated,
