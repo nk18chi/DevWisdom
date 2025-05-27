@@ -1,12 +1,12 @@
 import { expect, test, describe, vi, beforeEach, Mock } from 'vitest';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import connectMongoDB from './mongo/connect';
 import runServer from './server';
 import logger from './config/logger';
-import userDataLoader from './dataloader/User.dataLoader';
+import userDataLoader from './config/dataloader/User.dataLoader';
+import connectMongoDB from './infrastructure/mongo/connect';
 
-vi.mock('./mongo/connect');
+vi.mock('./infrastructure/mongo/connect');
 vi.mock('express', () => ({
   __esModule: true,
   default: () => ({

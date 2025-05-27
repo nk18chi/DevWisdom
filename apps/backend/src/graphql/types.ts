@@ -1,7 +1,7 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { User } from '../entities/User.entity';
-import { Quote } from '../entities/Quote.entity';
-import { Context } from '../interfaces/Context.interface';
+import { User } from '../domain/entities/User.entity';
+import { Quote } from '../domain/entities/Quote.entity';
+import { Context } from '../types/interfaces/Context.interface';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };

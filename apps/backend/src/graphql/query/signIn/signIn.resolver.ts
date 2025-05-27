@@ -1,9 +1,9 @@
 import { ok } from 'neverthrow';
 import { ValidationError } from 'zod-validation-error';
 import { GqlResolvers } from '../../types';
-import { getUserByEmail } from '../../../repositories/user/User.repository';
-import signInWorkflow from '../../../workflows/signIn.workflows';
-import { Email } from '../../../objects/Email.object';
+import { getUserByEmail } from '../../../infrastructure/repositories/user/User.repository';
+import signInWorkflow from '../../../workflows/signIn/signIn.workflows';
+import { Email } from '../../../domain/objects/email/Email.object';
 
 const userResolver: GqlResolvers = {
   Query: {

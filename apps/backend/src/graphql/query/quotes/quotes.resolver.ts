@@ -1,4 +1,4 @@
-import QuoteModel from '../../../repositories/quote/Quote.schema';
+import QuoteModel from '../../../infrastructure/repositories/quote/Quote.schema';
 import { GqlResolvers } from '../../types';
 import { Types } from 'mongoose';
 

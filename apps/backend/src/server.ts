@@ -15,16 +15,16 @@ import { rateLimitDirective } from 'graphql-rate-limit-directive';
 import { ApolloServerErrorCode } from '@apollo/server/errors';
 import * as Sentry from '@sentry/node';
 
-import connectMongoDB from './mongo/connect';
+import connectMongoDB from './infrastructure/mongo/connect';
 import logger from './config/logger';
 import typeDefs from './graphql/schemas';
 import resolvers from './graphql/resolvers';
 import 'dotenv/config';
-import userDataLoader from './dataloader/User.dataLoader';
-import Context from './interfaces/Context.interface';
+import userDataLoader from './config/dataloader/User.dataLoader';
+import Context from './types/interfaces/Context.interface';
 import permissions from './graphql/authorizations/permissions';
 import './sentry';
-import { AuthorizedUser } from './entities/User.entity';
+import { AuthorizedUser } from './domain/entities/User.entity';
 
 const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } = rateLimitDirective();
 

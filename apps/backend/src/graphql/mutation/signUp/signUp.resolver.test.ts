@@ -4,12 +4,12 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { applyMiddleware } from 'graphql-middleware';
 import { rateLimitDirective } from 'graphql-rate-limit-directive';
 import { errAsync, okAsync } from 'neverthrow';
-import Context from '../../../interfaces/Context.interface';
+import Context from '../../../types/interfaces/Context.interface';
 import typeDefs from '../../schemas';
 import resolvers from '../../resolvers';
 import permissions from '../../authorizations/permissions';
-import * as userRepository from '../../../repositories/user/User.repository';
-import * as signUpWorkflow from '../../../workflows/signUp.workflows';
+import * as userRepository from '../../../infrastructure/repositories/user/User.repository';
+import * as signUpWorkflow from '../../../workflows/signUp/signUp.workflows';
 import MUTATION_SIGN_UP from './signUp.gql';
 
 const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } = rateLimitDirective();

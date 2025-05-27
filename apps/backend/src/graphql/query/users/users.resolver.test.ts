@@ -4,16 +4,16 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { applyMiddleware } from 'graphql-middleware';
 import { rateLimitDirective } from 'graphql-rate-limit-directive';
 import { Types } from 'mongoose';
-import Context from '../../../interfaces/Context.interface';
+import Context from '../../../types/interfaces/Context.interface';
 import typeDefs from '../../schemas';
 import resolvers from '../../resolvers';
-import User from '../../../repositories/user/User.schema';
+import User from '../../../infrastructure/repositories/user/User.schema';
 import { GET_QUERY_USERS } from './users.gql';
 import permissions from '../../authorizations/permissions';
-import IUser from '../../../entities/User.entity';
+import IUser from '../../../domain/entities/User.entity';
 import { GqlUserConnection } from '../../types';
-import { MongoId } from '../../../objects/MongoId.object';
-import userDataLoader from '../../../dataloader/User.dataLoader';
+import { MongoId } from '../../../domain/objects/mongoId/MongoId.object';
+import userDataLoader from '../../../config/dataloader/User.dataLoader';
 
 const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } = rateLimitDirective();
 

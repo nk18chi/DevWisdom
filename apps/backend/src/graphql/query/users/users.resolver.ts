@@ -1,4 +1,4 @@
-import User from '../../../repositories/user/User.schema';
+import User from '../../../infrastructure/repositories/user/User.schema';
 import { GqlResolvers } from '../../types';
 
 const userResolver: GqlResolvers = {

@@ -1,9 +1,9 @@
 import { ok } from 'neverthrow';
 import { GqlResolvers } from '../../types';
-import { getUserById, updateUser } from '../../../repositories/user/User.repository';
-import updateUserWorkflow from '../../../workflows/updateUser.workflows';
-import { MongoId } from '../../../objects/MongoId.object';
-import getAuthorizedUser from '../../../services/User.service';
+import { getUserById, updateUser } from '../../../infrastructure/repositories/user/User.repository';
+import updateUserWorkflow from '../../../workflows/updateUser/updateUser.workflows';
+import { MongoId } from '../../../domain/objects/mongoId/MongoId.object';
+import getAuthorizedUser from '../../../services/user/User.service';
 
 const updateUserResolver: GqlResolvers = {
   Mutation: {

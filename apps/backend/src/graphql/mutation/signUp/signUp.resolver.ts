@@ -1,7 +1,7 @@
 import { okAsync } from 'neverthrow';
 import { GqlResolvers } from '../../types';
-import { saveCreatedUser } from '../../../repositories/user/User.repository';
-import signUpWorkflow from '../../../workflows/signUp.workflows';
+import { saveCreatedUser } from '../../../infrastructure/repositories/user/User.repository';
+import signUpWorkflow from '../../../workflows/signUp/signUp.workflows';
 
 const signUpResolver: GqlResolvers = {
   Mutation: {

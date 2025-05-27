@@ -4,18 +4,18 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { applyMiddleware } from 'graphql-middleware';
 import { rateLimitDirective } from 'graphql-rate-limit-directive';
 import { errAsync, okAsync } from 'neverthrow';
-import Context from '../../../interfaces/Context.interface';
+import Context from '../../../types/interfaces/Context.interface';
 import typeDefs from '../../schemas';
 import resolvers from '../../resolvers';
 import permissions from '../../authorizations/permissions';
-import User from '../../../entities/User.entity';
+import User from '../../../domain/entities/User.entity';
 import { GqlUserStatus } from '../../types';
-import { MongoId } from '../../../objects/MongoId.object';
+import { MongoId } from '../../../domain/objects/mongoId/MongoId.object';
 import QUERY_SIGN_IN from './signIn.gql';
-import { Email } from '../../../objects/Email.object';
-import { HashingPassword } from '../../../objects/HashingPassword.object';
-import * as userRepository from '../../../repositories/user/User.repository';
-import * as signInUserWorkflow from '../../../workflows/signIn.workflows';
+import { Email } from '../../../domain/objects/email/Email.object';
+import { HashingPassword } from '../../../domain/objects/hashingPassword/HashingPassword.object';
+import * as userRepository from '../../../infrastructure/repositories/user/User.repository';
+import * as signInUserWorkflow from '../../../workflows/signIn/signIn.workflows';
 
 const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } = rateLimitDirective();
 
