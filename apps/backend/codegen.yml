@@ -11,7 +11,7 @@ generates:
       - typescript-resolvers
     config:
       typesPrefix: Gql
-      contextType: ../interfaces/Context.interface#Context
+      contextType: ../types/interfaces/Context.interface#Context
       mappers:
-        User: ../entities/User.entity#User
-        Quote: ../entities/Quote.entity#Quote
+        User: ../domain/entities/User.entity#User
+        Quote: ../domain/entities/Quote.entity#Quote
