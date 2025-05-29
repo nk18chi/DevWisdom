@@ -8,8 +8,6 @@ type QuoteReport {
   updatedAt: String!
 }
 
-
-
 type Quote {
   _id: ID!
   content: String!

@@ -50,6 +50,7 @@ export type GqlQuery = {
   __typename?: 'Query';
   quote?: Maybe<GqlQuote>;
   quotes?: Maybe<GqlQuoteConnection>;
+  randomQuote?: Maybe<GqlQuote>;
   signIn: Scalars['String']['output'];
   users?: Maybe<GqlUserConnection>;
 };
@@ -346,6 +347,7 @@ export type GqlQueryResolvers<
     ContextType,
     RequireFields<GqlQueryQuotesArgs, 'first'>
   >;
+  randomQuote?: Resolver<Maybe<GqlResolversTypes['Quote']>, ParentType, ContextType>;
   signIn?: Resolver<GqlResolversTypes['String'], ParentType, ContextType, RequireFields<GqlQuerySignInArgs, 'input'>>;
   users?: Resolver<
     Maybe<GqlResolversTypes['UserConnection']>,
