@@ -30,6 +30,11 @@ interface Quote {
   updatedAt: Date;
 }
 
+interface RandomQuote extends Quote {
+  status: QuoteStatus.Published;
+  isReviewed: boolean;
+}
+
 interface CreatedQuote {
   _id: MongoId;
   content: QuoteContent;
@@ -44,5 +49,5 @@ interface UpdatedQuote {
   status: QuoteStatus;
 }
 
-export { CreatedQuote, UpdatedQuote, Quote, QuoteReport };
+export { CreatedQuote, UpdatedQuote, Quote, QuoteReport, RandomQuote };
 export default Quote;

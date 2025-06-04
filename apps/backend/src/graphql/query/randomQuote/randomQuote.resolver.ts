@@ -1,3 +1,4 @@
+import { RandomQuote } from '../../../domain/entities/Quote.entity';
 import QuoteModel from '../../../infrastructure/repositories/quote/Quote.schema';
 import QuoteStatus from '../../../types/enums/QuoteStatus';
 import { GqlResolvers } from '../../types';
@@ -5,7 +6,7 @@ import { GqlResolvers } from '../../types';
 const randomQuoteResolver: GqlResolvers = {
   Query: {
     randomQuote: async () => {
-      const result = await QuoteModel.aggregate([
+      const result = await QuoteModel.aggregate<RandomQuote>([
         { $match: { status: QuoteStatus.Published, isReviewed: true } },
         { $sample: { size: 1 } },
       ]);
