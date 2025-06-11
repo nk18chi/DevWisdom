@@ -1,18 +1,9 @@
-import QuoteReportStatus from '../../types/enums/QuoteReportStatus';
 import QuoteStatus from '../../types/enums/QuoteStatus';
 import { MongoId } from '../objects/mongoId/MongoId.object';
 import { QuoteAuthor } from '../objects/QuoteAuthor/QuoteAuthor.object';
 import { QuoteContent } from '../objects/quoteContent/QuoteContent.object';
-import { QuoteReportComment } from '../objects/quoteReportComment/QuoteReportComment.object';
-
-interface QuoteReport {
-  _id: MongoId;
-  comment: QuoteReportComment;
-  userId: MongoId;
-  status: QuoteReportStatus;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import QuoteLike from './QuoteLike.entity';
+import QuoteReport from './QuoteReport.entity';
 
 interface Quote {
   _id: MongoId;
@@ -20,7 +11,7 @@ interface Quote {
   author: QuoteAuthor;
   tagIds: MongoId[];
   commentIds: MongoId[];
-  likes: MongoId[];
+  likes: QuoteLike[];
   favorites: MongoId[];
   reports: QuoteReport[];
   userId: MongoId;

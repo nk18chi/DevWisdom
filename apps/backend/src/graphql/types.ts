@@ -80,10 +80,16 @@ export type GqlQuote = {
   content: Scalars['String']['output'];
   createdAt: Scalars['Date']['output'];
   isReviewed: Scalars['Boolean']['output'];
+  likeCount: Scalars['Int']['output'];
+  likedUsers: Array<GqlUser>;
   reports: Array<GqlQuoteReport>;
   status: GqlQuoteStatus;
   updatedAt: Scalars['Date']['output'];
   user: GqlUser;
+};
+
+export type GqlQuoteLikedUsersArgs = {
+  number?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type GqlQuoteConnection = {
@@ -366,6 +372,8 @@ export type GqlQuoteResolvers<
   content?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Date'], ParentType, ContextType>;
   isReviewed?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType>;
+  likeCount?: Resolver<GqlResolversTypes['Int'], ParentType, ContextType>;
+  likedUsers?: Resolver<Array<GqlResolversTypes['User']>, ParentType, ContextType, Partial<GqlQuoteLikedUsersArgs>>;
   reports?: Resolver<Array<GqlResolversTypes['QuoteReport']>, ParentType, ContextType>;
   status?: Resolver<GqlResolversTypes['QuoteStatus'], ParentType, ContextType>;
   updatedAt?: Resolver<GqlResolversTypes['Date'], ParentType, ContextType>;

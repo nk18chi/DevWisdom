@@ -6,6 +6,11 @@ const GET_QUERY_QUOTE = `
       author
       status
       isReviewed
+      likedUsers {
+        _id
+        email
+      }
+      likeCount
       createdAt
       updatedAt
       reports {

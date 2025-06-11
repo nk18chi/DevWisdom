@@ -18,6 +18,7 @@ import QuoteStatus from '../../../types/enums/QuoteStatus';
 import QuoteReportStatus from '../../../types/enums/QuoteReportStatus';
 import UserModel from '../../../infrastructure/repositories/user/User.schema';
 import QuoteModel from '../../../infrastructure/repositories/quote/Quote.schema';
+import User from '../../../domain/entities/User.entity';
 
 const { rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer } = rateLimitDirective();
 
@@ -27,7 +28,13 @@ const quoteMock: any = {
   author: 'author 1',
   tagIds: ['666a86b3ee5b217b01281a30'],
   commentIds: ['666a86b3ee5b217b01281a31'],
-  likes: ['666a86b3ee5b217b01281a32'],
+  likes: [
+    {
+      userId: new Types.ObjectId('666a86b3ee5b217b01281a32'),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ],
   favorites: ['666a86b3ee5b217b01281a33'],
   reports: [
     {
@@ -80,6 +87,7 @@ describe('quote.resolver.ts', async () => {
     vi.spyOn(QuoteModel, 'findById').mockReturnValue(chainableQuoteMock);
     vi.spyOn(UserModel, 'find').mockReturnValue({ lean: vi.fn().mockReturnValue([userMock]) } as any);
     vi.stubEnv('JWT_PRIVATE_KEY', 'testJWTPrivateKey');
+    vi.spyOn(userDataLoader, 'loadMany').mockResolvedValue([userMock]);
   });
   describe('quote query', () => {
     test('should call quote with id variable', async () => {
@@ -127,6 +135,42 @@ describe('quote.resolver.ts', async () => {
       );
       assert(response.body.kind === 'single');
       expect(response.body.singleResult.errors).toBeUndefined();
+    });
+    describe('likeCount', () => {
+      test('should return the number of likes', async () => {
+        const response = await testServer.executeOperation<{ quote: IQuote & { likeCount: number } }>(
+          { query: GET_QUERY_QUOTE, variables: { id: quoteMock._id } },
+          contextMock,
+        );
+        assert(response.body.kind === 'single');
+        expect(response.body.singleResult.data?.quote.likeCount).toBe(quoteMock.likes.length);
+      });
+    });
+    describe('likedUsers', () => {
+      test('should return likedUsers', async () => {
+        const response = await testServer.executeOperation<{ quote: IQuote & { likedUsers: User[] } }>(
+          { query: GET_QUERY_QUOTE, variables: { id: quoteMock._id } },
+          contextMock,
+        );
+        expect(userDataLoader.loadMany).toHaveBeenCalledWith(quoteMock.likes.map((like: any) => like.userId));
+        assert(response.body.kind === 'single');
+        expect(response.body.singleResult.data?.quote.likedUsers).toEqual([userMock]);
+      });
+      test('should return the number of likedUsers', async () => {
+        vi.spyOn(QuoteModel, 'findById').mockReturnValue({
+          lean: vi.fn().mockReturnValue({
+            ...quoteMock,
+            likes: Array.from({ length: 20 }, () => ({ userId: new Types.ObjectId('666a86b3ee5b217b01281a36') })),
+          }),
+        } as any);
+        await testServer.executeOperation<{ quote: IQuote & { likedUsers: User[] } }>(
+          { query: GET_QUERY_QUOTE, variables: { id: quoteMock._id, number: 10 } },
+          contextMock,
+        );
+        expect(userDataLoader.loadMany).toHaveBeenCalledWith(
+          Array.from({ length: 10 }, () => new Types.ObjectId('666a86b3ee5b217b01281a36')),
+        );
+      });
     });
   });
 });

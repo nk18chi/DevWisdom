@@ -18,6 +18,8 @@ type Quote {
   createdAt: Date!
   updatedAt: Date!
   user: User!
+  likeCount: Int!
+  likedUsers(number: Int): [User!]!
 }
 
 enum QuoteStatus {
