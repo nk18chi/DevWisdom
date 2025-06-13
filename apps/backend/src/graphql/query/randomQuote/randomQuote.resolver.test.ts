@@ -95,6 +95,22 @@ describe('randomQuote.resolver.ts', async () => {
       expect(response.body.singleResult.errors).toBeUndefined();
       expect(response.body.singleResult.data?.randomQuote).toBeDefined();
     });
+    test('should thrown an error if randomQuote workflow fails', async () => {
+      vi.spyOn(QuoteModel, 'aggregate').mockReturnValue([
+        { ...randomQuoteMock[0], status: QuoteStatus.Unpublished },
+      ] as any);
+      const response = await testServer.executeOperation<{ randomQuote: IQuote }>(
+        {
+          query: GET_QUERY_RANDOM_QUOTE,
+          variables: {},
+        },
+        contextMock,
+      );
+      assert(response.body.kind === 'single');
+      expect(response.body.singleResult.errors).toBeDefined();
+      expect(response.body.singleResult.data?.randomQuote).toBeNull();
+      expect(response.body.singleResult.errors?.[0].message).toBeDefined();
+    });
     test('should return null if any quote is not found', async () => {
       vi.spyOn(QuoteModel, 'aggregate').mockReturnValue([] as any);
       const response = await testServer.executeOperation<{ randomQuote: IQuote }>(

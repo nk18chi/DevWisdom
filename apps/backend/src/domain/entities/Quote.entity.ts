@@ -23,7 +23,7 @@ interface Quote {
 
 interface RandomQuote extends Quote {
   status: QuoteStatus.Published;
-  isReviewed: boolean;
+  isReviewed: true;
 }
 
 interface CreatedQuote {
