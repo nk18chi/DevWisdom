@@ -1,6 +1,8 @@
+import { ok } from 'neverthrow';
 import { DEFAULT_PAGE_SIZE } from '../../../config/constants';
-import User from '../../../domain/entities/User.entity';
+import User, { ValidatedUser } from '../../../domain/entities/User.entity';
 import QuoteModel from '../../../infrastructure/repositories/quote/Quote.schema';
+import validatedUserWorkflow from '../../../workflows/validatedUser/validatedUser.workflows';
 import { GqlResolvers } from '../../types';
 import { Types } from 'mongoose';
 
@@ -9,12 +11,18 @@ const quotesResolver: GqlResolvers = {
     quote: async (_, { id }) => QuoteModel.findById(id).lean(),
   },
   Quote: {
-    user: async (quote, _, context) => {
+    user: async (quote, _, context): Promise<ValidatedUser> => {
       const { userDataLoader } = context.dataLoaders;
       const user = await userDataLoader.load(new Types.ObjectId(quote.userId.toString()));
       if (!user) throw new Error('User not found');
-
-      return user;
+      const workflow = validatedUserWorkflow;
+      const result = ok(user).andThen(workflow);
+      return result.match(
+        (validatedUser) => validatedUser,
+        (error) => {
+          throw error;
+        },
+      );
     },
     likeCount: async (quote) => quote.likes.length,
     likedUsers: async (quote, { number }, context) => {
