@@ -1,4 +1,4 @@
-import { shield, allow } from 'graphql-shield';
+import { shield, allow, deny } from 'graphql-shield';
 import isAuthenticated from './rules/isAuthenticated.rule';
 
 const permissions = shield(
@@ -13,6 +13,9 @@ const permissions = shield(
     Mutation: {
       '*': isAuthenticated,
       signUp: allow,
+    },
+    User: {
+      password: deny,
     },
   },
   {
