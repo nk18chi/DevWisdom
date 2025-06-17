@@ -11,14 +11,6 @@ interface User {
   password: HashingPassword;
 }
 
-interface ValidatedUser {
-  _id: MongoId;
-  email: Email;
-  emailVerified: true;
-  status: GqlUserStatus.Active;
-  password: HashingPassword;
-}
-
 interface CreatedUser {
   _id: MongoId;
   email: Email;
@@ -43,5 +35,5 @@ interface AuthorizedUser {
   _id: MongoId;
 }
 
-export { CreatedUser, UpdatedUser, User, AuthorizedUser, SignedInUser, ValidatedUser };
+export { CreatedUser, UpdatedUser, User, AuthorizedUser, SignedInUser };
 export default User;
