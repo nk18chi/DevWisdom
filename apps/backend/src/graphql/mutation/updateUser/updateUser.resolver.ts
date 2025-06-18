@@ -17,6 +17,7 @@ const updateUserResolver: GqlResolvers = {
             const invalidatedUserCommand = {
               input: {
                 password: input.password,
+                displayName: input.displayName,
               },
               user,
             };

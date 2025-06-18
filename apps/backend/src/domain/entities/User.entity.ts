@@ -1,10 +1,12 @@
 import { GqlUserStatus } from '../../graphql/types';
+import { DisplayName } from '../objects/displayName/DisplayName.object';
 import { Email } from '../objects/email/Email.object';
 import { HashingPassword } from '../objects/hashingPassword/HashingPassword.object';
 import { MongoId } from '../objects/mongoId/MongoId.object';
 
 interface User {
   _id: MongoId;
+  displayName?: DisplayName;
   email: Email;
   emailVerified: boolean;
   status: GqlUserStatus;
@@ -28,6 +30,7 @@ interface SignedInUser {
 
 interface UpdatedUser {
   _id: MongoId;
+  displayName: DisplayName;
   password: HashingPassword;
 }
 

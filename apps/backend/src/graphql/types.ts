@@ -136,12 +136,14 @@ export type GqlSignUpUserInput = {
 };
 
 export type GqlUpdateUserInput = {
+  displayName: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
 export type GqlUser = {
   __typename?: 'User';
   _id: Scalars['ID']['output'];
+  displayName?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   emailVerified: Scalars['Boolean']['output'];
   password: Scalars['String']['output'];
@@ -417,6 +419,7 @@ export type GqlUserResolvers<
   ParentType extends GqlResolversParentTypes['User'] = GqlResolversParentTypes['User'],
 > = {
   _id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
+  displayName?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   emailVerified?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType>;
   password?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;

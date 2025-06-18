@@ -2,13 +2,16 @@ import { err, ok, okAsync, Result, ResultAsync } from 'neverthrow';
 import { RawPassword } from '../../domain/objects/rawPassword/RawPassword.object';
 import { HashingPassword } from '../../domain/objects/hashingPassword/HashingPassword.object';
 import User, { UpdatedUser } from '../../domain/entities/User.entity';
+import { DisplayName } from '../../domain/objects/displayName/DisplayName.object';
 
 interface InvalidatedUserInput {
   password: string;
+  displayName: string;
 }
 
 interface ValidatedUserInput {
   password: RawPassword;
+  displayName: DisplayName;
 }
 
 interface InvalidatedUserCommand {
@@ -25,16 +28,18 @@ type ValidatedUseCommandResult = (_command: InvalidatedUserCommand) => Result<Va
 
 const validatedUserCommand: ValidatedUseCommandResult = (command) => {
   const passwordResult = RawPassword(command.input.password);
-  const values = Result.combine([passwordResult]);
+  const displayNameResult = DisplayName(command.input.displayName);
+  const values = Result.combine([passwordResult, displayNameResult]);
 
   if (values.isErr()) {
     return err(values.error);
   }
-  const [password] = values.value;
+  const [password, displayName] = values.value;
 
   return ok({
     input: {
       password,
+      displayName,
     },
     user: command.user,
   });
@@ -47,6 +52,7 @@ const updatedUser: UpdatedUserResult = (command) => {
   const values = ResultAsync.combine([hashingPasswordResult]);
   return values.map(([password]) => ({
     _id: command.user._id,
+    displayName: command.input.displayName,
     password,
   }));
 };

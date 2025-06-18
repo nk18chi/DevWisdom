@@ -5,6 +5,7 @@ type Mutation {
 
 input UpdateUserInput {
   password: String!
+  displayName: String!
 }
 `;
 

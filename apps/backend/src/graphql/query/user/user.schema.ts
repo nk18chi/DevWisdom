@@ -1,6 +1,7 @@
 const userTypeDef = `#graphql
 type User {
   _id: ID!
+  displayName: String
   email: String!
   emailVerified: Boolean!
   status: UserStatus!
