@@ -8,6 +8,15 @@ const config: CodegenConfig = {
     './gql/types/': {
       preset: 'client',
     },
+    './gql/generated/types.ts': {
+      documents: ['./gql/queries/*.graphql'],
+      plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo'],
+      config: {
+        withHooks: true,
+        withComponent: false,
+        withHOC: false,
+      },
+    },
   },
 };
 

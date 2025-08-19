@@ -6,6 +6,7 @@ type User {
   emailVerified: Boolean!
   status: UserStatus!
   password: String! # don't expose password so this is always null, handling by GraphQL Shield
+  avatar: String
 }
 
 enum UserStatus {

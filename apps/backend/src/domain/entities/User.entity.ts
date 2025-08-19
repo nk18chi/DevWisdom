@@ -1,4 +1,5 @@
 import { GqlUserStatus } from '../../graphql/types';
+import { Avatar } from '../objects/avatar/avatar.object';
 import { DisplayName } from '../objects/displayName/DisplayName.object';
 import { Email } from '../objects/email/Email.object';
 import { HashingPassword } from '../objects/hashingPassword/HashingPassword.object';
@@ -11,6 +12,7 @@ interface User {
   emailVerified: boolean;
   status: GqlUserStatus;
   password: HashingPassword;
+  avatar?: Avatar;
 }
 
 interface CreatedUser {
@@ -26,12 +28,14 @@ interface SignedInUser {
   email: Email;
   emailVerified: true;
   status: GqlUserStatus.Active;
+  avatar?: string;
 }
 
 interface UpdatedUser {
   _id: MongoId;
   displayName: DisplayName;
   password: HashingPassword;
+  avatar?: Avatar;
 }
 
 interface AuthorizedUser {

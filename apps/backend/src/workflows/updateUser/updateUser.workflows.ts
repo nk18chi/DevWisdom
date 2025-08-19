@@ -3,15 +3,18 @@ import { RawPassword } from '../../domain/objects/rawPassword/RawPassword.object
 import { HashingPassword } from '../../domain/objects/hashingPassword/HashingPassword.object';
 import User, { UpdatedUser } from '../../domain/entities/User.entity';
 import { DisplayName } from '../../domain/objects/displayName/DisplayName.object';
+import { Avatar } from '../../domain/objects/avatar/avatar.object';
 
 interface InvalidatedUserInput {
   password: string;
   displayName: string;
+  avatar?: string;
 }
 
 interface ValidatedUserInput {
   password: RawPassword;
   displayName: DisplayName;
+  avatar?: Avatar;
 }
 
 interface InvalidatedUserCommand {
@@ -29,17 +32,19 @@ type ValidatedUseCommandResult = (_command: InvalidatedUserCommand) => Result<Va
 const validatedUserCommand: ValidatedUseCommandResult = (command) => {
   const passwordResult = RawPassword(command.input.password);
   const displayNameResult = DisplayName(command.input.displayName);
-  const values = Result.combine([passwordResult, displayNameResult]);
+  const avatarResult = command.input.avatar ? Avatar(command.input.avatar) : ok(undefined);
+  const values = Result.combine([passwordResult, displayNameResult, avatarResult]);
 
   if (values.isErr()) {
     return err(values.error);
   }
-  const [password, displayName] = values.value;
+  const [password, displayName, avatar] = values.value;
 
   return ok({
     input: {
       password,
       displayName,
+      avatar,
     },
     user: command.user,
   });
@@ -54,6 +59,7 @@ const updatedUser: UpdatedUserResult = (command) => {
     _id: command.user._id,
     displayName: command.input.displayName,
     password,
+    avatar: command.input.avatar,
   }));
 };
 

@@ -9,6 +9,7 @@ const userSchema = new Schema<User>(
     emailVerified: { type: Boolean, required: true, default: false },
     password: { type: String, required: true },
     status: { type: String, required: true, enum: GqlUserStatus, default: GqlUserStatus.Active },
+    avatar: { type: String },
   },
   { timestamps: true },
 );

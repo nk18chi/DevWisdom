@@ -18,6 +18,7 @@ const updateUserResolver: GqlResolvers = {
               input: {
                 password: input.password,
                 displayName: input.displayName,
+                avatar: input.avatar || undefined,
               },
               user,
             };

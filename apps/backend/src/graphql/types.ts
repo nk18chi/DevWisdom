@@ -136,6 +136,7 @@ export type GqlSignUpUserInput = {
 };
 
 export type GqlUpdateUserInput = {
+  avatar?: InputMaybe<Scalars['String']['input']>;
   displayName: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };

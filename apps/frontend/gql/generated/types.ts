@@ -1,5 +1,5 @@
-/* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -7,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string };
@@ -173,43 +174,59 @@ export type RandomQuoteQuery = {
     author: string;
     content: string;
     likeCount: number;
-    likedUsers: Array<{ __typename?: 'User'; displayName?: string | null }>;
+    likedUsers: Array<{ __typename?: 'User'; displayName?: string | null; avatar?: string | null }>;
   } | null;
 };
 
-export const RandomQuoteDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'RandomQuote' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'randomQuote' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: '_id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'author' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'content' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'likeCount' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'likedUsers' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'displayName' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<RandomQuoteQuery, RandomQuoteQueryVariables>;
+export const RandomQuoteDocument = gql`
+  query RandomQuote {
+    randomQuote {
+      _id
+      author
+      content
+      likeCount
+      likedUsers {
+        displayName
+        avatar
+      }
+    }
+  }
+`;
+
+/**
+ * __useRandomQuoteQuery__
+ *
+ * To run a query within a React component, call `useRandomQuoteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRandomQuoteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRandomQuoteQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRandomQuoteQuery(
+  baseOptions?: Apollo.QueryHookOptions<RandomQuoteQuery, RandomQuoteQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<RandomQuoteQuery, RandomQuoteQueryVariables>(RandomQuoteDocument, options);
+}
+export function useRandomQuoteLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<RandomQuoteQuery, RandomQuoteQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<RandomQuoteQuery, RandomQuoteQueryVariables>(RandomQuoteDocument, options);
+}
+export function useRandomQuoteSuspenseQuery(
+  baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<RandomQuoteQuery, RandomQuoteQueryVariables>,
+) {
+  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<RandomQuoteQuery, RandomQuoteQueryVariables>(RandomQuoteDocument, options);
+}
+export type RandomQuoteQueryHookResult = ReturnType<typeof useRandomQuoteQuery>;
+export type RandomQuoteLazyQueryHookResult = ReturnType<typeof useRandomQuoteLazyQuery>;
+export type RandomQuoteSuspenseQueryHookResult = ReturnType<typeof useRandomQuoteSuspenseQuery>;
+export type RandomQuoteQueryResult = Apollo.QueryResult<RandomQuoteQuery, RandomQuoteQueryVariables>;

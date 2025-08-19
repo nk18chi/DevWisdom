@@ -14,8 +14,8 @@
     "codegen:watch": "graphql-codegen --watch --config codegen.ts"
   },
   "dependencies": {
-    "@apollo/client": "^3.10.8",
-    "@apollo/experimental-nextjs-app-support": "^0.11.2",
+    "@apollo/client": "^3.12.2",
+    "@apollo/experimental-nextjs-app-support": "^0.11.7",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@parcel/watcher": "^2.4.1",
     "@sentry/nextjs": "^8",
@@ -35,6 +35,9 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.3.3",
+    "@graphql-codegen/typescript": "^4.1.0",
+    "@graphql-codegen/typescript-operations": "^4.6.1",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.3",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",

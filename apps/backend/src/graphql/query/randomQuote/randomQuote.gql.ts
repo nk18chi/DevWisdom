@@ -15,6 +15,8 @@ const GET_QUERY_RANDOM_QUOTE = `
       user {
         _id
         email
+        avatar
+        displayName
       }
     }
   }

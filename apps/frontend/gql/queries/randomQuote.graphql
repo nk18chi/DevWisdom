@@ -1,0 +1,11 @@
+query RandomQuote {
+  randomQuote {
+    _id
+    author
+    content
+    likeCount
+    likedUsers {
+      displayName
+    }
+  }
+}
