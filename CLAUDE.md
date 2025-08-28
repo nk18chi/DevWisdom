@@ -84,6 +84,10 @@ DevWisdom is a quotes management platform built with:
 - **Test Coverage:** Aim for comprehensive test coverage of domain logic
 - **Test Types:** Unit tests for domain objects, integration tests for workflows
 - **Testing Philosophy:** Tests should be written before implementation code
+- **Quality Assurance:** After completing any changes, ALWAYS run the following commands in order:
+  1. `pnpm run format` - Ensure code formatting consistency
+  2. `pnpm run lint` - Check for code quality issues and enforce standards
+  3. `pnpm run test` - Verify all tests pass and no regressions are introduced
 
 ### Development Commands
 
